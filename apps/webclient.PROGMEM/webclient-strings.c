@@ -1,22 +1,22 @@
 #include <avr/pgmspace.h>
-const prog_char http_http[8] PROGMEM = 
-/* "http://" */
+const prog_char http_http[8] PROGMEM =
+    /* "http://" */
 {0x68, 0x74, 0x74, 0x70, 0x3a, 0x2f, 0x2f, 0 };
-const prog_char http_200[5] PROGMEM = 
-/* "200 " */
+const prog_char http_200[5] PROGMEM =
+    /* "200 " */
 {0x32, 0x30, 0x30, 0x20, 0 };
-const prog_char http_301[5] PROGMEM = 
-/* "301 " */
+const prog_char http_301[5] PROGMEM =
+    /* "301 " */
 {0x33, 0x30, 0x31, 0x20, 0 };
-const prog_char http_302[5] PROGMEM = 
-/* "302 " */
+const prog_char http_302[5] PROGMEM =
+    /* "302 " */
 {0x33, 0x30, 0x32, 0x20, 0 };
-const prog_char http_10[9] PROGMEM = 
-/* "HTTP/1.0" */
+const prog_char http_10[9] PROGMEM =
+    /* "HTTP/1.0" */
 {0x48, 0x54, 0x54, 0x50, 0x2f, 0x31, 0x2e, 0x30, 0 };
-const prog_char http_11[9] PROGMEM = 
-/* "HTTP/1.1" */
+const prog_char http_11[9] PROGMEM =
+    /* "HTTP/1.1" */
 {0x48, 0x54, 0x54, 0x50, 0x2f, 0x31, 0x2e, 0x31, 0 };
-const prog_char http_icy[4] PROGMEM = 
-/* "ICY" */
+const prog_char http_icy[4] PROGMEM =
+    /* "ICY" */
 {0x49, 0x43, 0x59, 0 };

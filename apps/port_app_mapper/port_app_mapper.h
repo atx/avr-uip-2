@@ -8,11 +8,11 @@ void uip_udp_appcall_port_app_mapper(void);
 
 #if defined UIP_APPCALL || defined UIP_UDP_APPCALL
 //#warn "*** PORT APP MAPPER WILL REDEFINE APPCALL ****"
-	#undef UIP_APPCALL
+#undef UIP_APPCALL
 //	#undef UIP_UDP_APPCALL
 #endif
 
-// now re-define the app call 
+// now re-define the app call
 #define UIP_APPCALL uip_appcall_port_app_mapper
 #define UIP_UDP_APPCALL uip_udp_appcall_port_app_mapper
 
@@ -23,8 +23,7 @@ typedef int8_t uip_udp_appstate_t;
 #error "port_app_mapper compiled but, PORT_APP_MAPPER not defined in apps-conf.h"
 #endif
 
-struct port_appcall_map
-{
+struct port_appcall_map {
 	void (*an_appcall)(void);
 	uint16_t lport;
 	uint16_t rport;

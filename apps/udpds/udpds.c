@@ -53,40 +53,39 @@ uint8_t udpds_enable_state = 1;
 void
 udpds_appcall(void)
 {
-  if(uip_poll()) {
-    if(udpds_enable_state && 
-		timer_expired(&udpds_interval_timer)) {
-      uip_udp_send(udpds_set_payload());
-      timer_reset(&udpds_interval_timer);
+	if (uip_poll()) {
+		if (udpds_enable_state &&
+		    timer_expired(&udpds_interval_timer)) {
+			uip_udp_send(udpds_set_payload());
+			timer_reset(&udpds_interval_timer);
+		}
 	}
-  }
 }
 /*---------------------------------------------------------------------------*/
 void udpds_conf(u16_t *to_ip, u16_t to_port, u8_t interval)
 {
-  if(udpds_conn != NULL) {
-    uip_udp_remove(udpds_conn);
-  }
+	if (udpds_conn != NULL)
+		uip_udp_remove(udpds_conn);
 
-  timer_set(&udpds_interval_timer, (CLOCK_CONF_SECOND * interval));
-  udpds_conn = uip_udp_new((uip_ipaddr_t *)to_ip, HTONS(to_port));
+	timer_set(&udpds_interval_timer, (CLOCK_CONF_SECOND * interval));
+	udpds_conn = uip_udp_new((uip_ipaddr_t *)to_ip, HTONS(to_port));
 }
 
 /* Functions. */
 void udpds_enable(void)
 {
-  udpds_enable_state = 1;
+	udpds_enable_state = 1;
 }
 
 
 void udpds_disable(void)
 {
-  udpds_enable_state = 0;
+	udpds_enable_state = 0;
 }
 
 
 uint8_t udpds_state(void)
 {
-    return (udpds_enable_state);
+	return (udpds_enable_state);
 }
 

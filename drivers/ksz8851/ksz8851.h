@@ -11,7 +11,7 @@ void ksz8851BeginPacketSend(unsigned int packetLength);
 void ksz8851SendPacketData(unsigned char *localBuffer, unsigned int length);
 void ksz8851EndPacketSend(void);
 unsigned int ksz8851BeginPacketRetrieve(void);
-void ksz8851RetrievePacketData(unsigned char * localBuffer, unsigned int length);
+void ksz8851RetrievePacketData(unsigned char *localBuffer, unsigned int length);
 void ksz8851EndPacketRetrieve(void);
 
 
@@ -428,7 +428,7 @@ void ksz8851EndPacketRetrieve(void);
 #define REG_PORT_CTRL              0xF6       /* P1CR */
 #define   PORT_LED_OFF                0x8000     /* Turn off all the port LEDs (LED3/LED2/LED1/LED0) */
 #define   PORT_TX_DISABLE             0x4000     /* Disable port transmit */
-#define   PORT_AUTO_NEG_RESTART       0x2000     /* Restart auto-negotiation */ 
+#define   PORT_AUTO_NEG_RESTART       0x2000     /* Restart auto-negotiation */
 #define   PORT_POWER_DOWN             0x0800     /* Set port power-down */
 #define   PORT_AUTO_MDIX_DISABLE      0x0400     /* Disable auto MDI-X */
 #define   PORT_FORCE_MDIX             0x0200     /* Force MDI-X */

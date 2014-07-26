@@ -82,123 +82,123 @@ static uip_ipaddr_t smtpserver;
 static
 PT_THREAD(smtp_thread(void))
 {
-  PSOCK_BEGIN(&s.psock);
+	PSOCK_BEGIN(&s.psock);
 
-  PSOCK_READTO(&s.psock, ISO_nl);
-   
-  if(strncmp(s.inputbuffer, smtp_220, 3) != 0) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(2);
-    PSOCK_EXIT(&s.psock);
-  }
-  
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_helo);
-  PSOCK_SEND_STR(&s.psock, localhostname);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	PSOCK_READTO(&s.psock, ISO_nl);
 
-  PSOCK_READTO(&s.psock, ISO_nl);
-  
-  if(s.inputbuffer[0] != ISO_2) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(3);
-    PSOCK_EXIT(&s.psock);
-  }
+	if (strncmp(s.inputbuffer, smtp_220, 3) != 0) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(2);
+		PSOCK_EXIT(&s.psock);
+	}
 
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_mail_from);
-  PSOCK_SEND_STR(&s.psock, s.from);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_helo);
+	PSOCK_SEND_STR(&s.psock, localhostname);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
 
-  PSOCK_READTO(&s.psock, ISO_nl);
-  
-  if(s.inputbuffer[0] != ISO_2) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(4);
-    PSOCK_EXIT(&s.psock);
-  }
+	PSOCK_READTO(&s.psock, ISO_nl);
 
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_rcpt_to);
-  PSOCK_SEND_STR(&s.psock, s.to);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	if (s.inputbuffer[0] != ISO_2) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(3);
+		PSOCK_EXIT(&s.psock);
+	}
 
-  PSOCK_READTO(&s.psock, ISO_nl);
-  
-  if(s.inputbuffer[0] != ISO_2) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(5);
-    PSOCK_EXIT(&s.psock);
-  }
-  
-  if(s.cc != 0) {
-    PSOCK_SEND_STR(&s.psock, (char *)smtp_rcpt_to);
-    PSOCK_SEND_STR(&s.psock, s.cc);
-    PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_mail_from);
+	PSOCK_SEND_STR(&s.psock, s.from);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
 
-    PSOCK_READTO(&s.psock, ISO_nl);
-  
-    if(s.inputbuffer[0] != ISO_2) {
-      PSOCK_CLOSE(&s.psock);
-      smtp_done(6);
-      PSOCK_EXIT(&s.psock);
-    }
-  }
-  
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_data);
-  
-  PSOCK_READTO(&s.psock, ISO_nl);
-  
-  if(s.inputbuffer[0] != ISO_3) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(7);
-    PSOCK_EXIT(&s.psock);
-  }
+	PSOCK_READTO(&s.psock, ISO_nl);
 
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_to);
-  PSOCK_SEND_STR(&s.psock, s.to);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
-  
-  if(s.cc != 0) {
-    PSOCK_SEND_STR(&s.psock, (char *)smtp_cc);
-    PSOCK_SEND_STR(&s.psock, s.cc);
-    PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
-  }
-  
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_from);
-  PSOCK_SEND_STR(&s.psock, s.from);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
-  
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_subject);
-  PSOCK_SEND_STR(&s.psock, s.subject);
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	if (s.inputbuffer[0] != ISO_2) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(4);
+		PSOCK_EXIT(&s.psock);
+	}
 
-  PSOCK_SEND(&s.psock, s.msg, s.msglen);
-  
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_crnlperiodcrnl);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_rcpt_to);
+	PSOCK_SEND_STR(&s.psock, s.to);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
 
-  PSOCK_READTO(&s.psock, ISO_nl);
-  if(s.inputbuffer[0] != ISO_2) {
-    PSOCK_CLOSE(&s.psock);
-    smtp_done(8);
-    PSOCK_EXIT(&s.psock);
-  }
+	PSOCK_READTO(&s.psock, ISO_nl);
 
-  PSOCK_SEND_STR(&s.psock, (char *)smtp_quit);
-  smtp_done(SMTP_ERR_OK);
-  PSOCK_END(&s.psock);
+	if (s.inputbuffer[0] != ISO_2) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(5);
+		PSOCK_EXIT(&s.psock);
+	}
+
+	if (s.cc != 0) {
+		PSOCK_SEND_STR(&s.psock, (char *)smtp_rcpt_to);
+		PSOCK_SEND_STR(&s.psock, s.cc);
+		PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+
+		PSOCK_READTO(&s.psock, ISO_nl);
+
+		if (s.inputbuffer[0] != ISO_2) {
+			PSOCK_CLOSE(&s.psock);
+			smtp_done(6);
+			PSOCK_EXIT(&s.psock);
+		}
+	}
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_data);
+
+	PSOCK_READTO(&s.psock, ISO_nl);
+
+	if (s.inputbuffer[0] != ISO_3) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(7);
+		PSOCK_EXIT(&s.psock);
+	}
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_to);
+	PSOCK_SEND_STR(&s.psock, s.to);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+
+	if (s.cc != 0) {
+		PSOCK_SEND_STR(&s.psock, (char *)smtp_cc);
+		PSOCK_SEND_STR(&s.psock, s.cc);
+		PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+	}
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_from);
+	PSOCK_SEND_STR(&s.psock, s.from);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_subject);
+	PSOCK_SEND_STR(&s.psock, s.subject);
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnl);
+
+	PSOCK_SEND(&s.psock, s.msg, s.msglen);
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_crnlperiodcrnl);
+
+	PSOCK_READTO(&s.psock, ISO_nl);
+	if (s.inputbuffer[0] != ISO_2) {
+		PSOCK_CLOSE(&s.psock);
+		smtp_done(8);
+		PSOCK_EXIT(&s.psock);
+	}
+
+	PSOCK_SEND_STR(&s.psock, (char *)smtp_quit);
+	smtp_done(SMTP_ERR_OK);
+	PSOCK_END(&s.psock);
 }
 /*---------------------------------------------------------------------------*/
 void
 smtp_appcall(void)
 {
-  if(uip_closed()) {
-    s.connected = 0;
-    return;
-  }
-  if(uip_aborted() || uip_timedout()) {
-    s.connected = 0;
-    smtp_done(1);
-    return;
-  }
-  smtp_thread();
+	if (uip_closed()) {
+		s.connected = 0;
+		return;
+	}
+	if (uip_aborted() || uip_timedout()) {
+		s.connected = 0;
+		smtp_done(1);
+		return;
+	}
+	smtp_thread();
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -215,8 +215,8 @@ smtp_appcall(void)
 void
 smtp_configure(char *lhostname, void *server)
 {
-  localhostname = lhostname;
-  uip_ipaddr_copy(smtpserver, server);
+	localhostname = lhostname;
+	uip_ipaddr_copy(smtpserver, server);
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -231,31 +231,30 @@ smtp_configure(char *lhostname, void *server)
  */
 unsigned char
 smtp_send(char *to, char *cc, char *from,
-	  char *subject, char *msg, u16_t msglen)
+          char *subject, char *msg, u16_t msglen)
 {
-  struct uip_conn *conn;
+	struct uip_conn *conn;
 
-  conn = uip_connect(smtpserver, HTONS(25));
-  if(conn == NULL) {
-    return 0;
-  }
-  s.connected = 1;
-  s.to = to;
-  s.cc = cc;
-  s.from = from;
-  s.subject = subject;
-  s.msg = msg;
-  s.msglen = msglen;
+	conn = uip_connect(smtpserver, HTONS(25));
+	if (conn == NULL)
+		return 0;
+	s.connected = 1;
+	s.to = to;
+	s.cc = cc;
+	s.from = from;
+	s.subject = subject;
+	s.msg = msg;
+	s.msglen = msglen;
 
-  PSOCK_INIT(&s.psock, s.inputbuffer, sizeof(s.inputbuffer));
-  
-  return 1;
+	PSOCK_INIT(&s.psock, s.inputbuffer, sizeof(s.inputbuffer));
+
+	return 1;
 }
 /*---------------------------------------------------------------------------*/
 void
 smtp_init(void)
 {
-  s.connected = 0;
+	s.connected = 0;
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

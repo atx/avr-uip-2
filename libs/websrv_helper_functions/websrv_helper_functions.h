@@ -1,7 +1,7 @@
 /*********************************************
  * vim:sw=8:ts=8:si:et
  * To use the above modeline in vim you must have "set modeline" in your .vimrc
- * Author: Guido Socher 
+ * Author: Guido Socher
  * Copyright: GPL V2
  *********************************************/
 //@{
@@ -9,7 +9,7 @@
 #define WEBSRV_HELPER_FUNCTIONS_H
 
 // These functions are documented in websrv_help_functions.c
-uint8_t find_key_val(char *str,char *strbuf, uint8_t maxlen,char *key);
+uint8_t find_key_val(char *str, char *strbuf, uint8_t maxlen, char *key);
 //extern void urldecode(char *urlbuf);
 //extern void urlencode(char *str,char *urlbuf);
 //extern uint8_t parse_ip(uint8_t *bytestr,char *str);

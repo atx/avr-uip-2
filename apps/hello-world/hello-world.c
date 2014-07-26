@@ -40,8 +40,8 @@ static int handle_connection(struct hello_world_state *s);
 void
 hello_world_init(void)
 {
-  /* We start to listen for connections on TCP port 1000. */
-  uip_listen(HTONS(1000));
+	/* We start to listen for connections on TCP port 1000. */
+	uip_listen(HTONS(1000));
 }
 /*---------------------------------------------------------------------------*/
 /*
@@ -54,27 +54,26 @@ hello_world_init(void)
 void
 hello_world_appcall(void)
 {
-  /*
-   * The uip_conn structure has a field called "appstate" that holds
-   * the application state of the connection. We make a pointer to
-   * this to access it easier.
-   */
-  struct hello_world_state *s = &(uip_conn->appstate);
+	/*
+	 * The uip_conn structure has a field called "appstate" that holds
+	 * the application state of the connection. We make a pointer to
+	 * this to access it easier.
+	 */
+	struct hello_world_state *s = &(uip_conn->appstate);
 
-  /*
-   * If a new connection was just established, we should initialize
-   * the protosocket in our applications' state structure.
-   */
-  if(uip_connected()) {
-    PSOCK_INIT(&s->p, s->inputbuffer, sizeof(s->inputbuffer));
-  }
+	/*
+	 * If a new connection was just established, we should initialize
+	 * the protosocket in our applications' state structure.
+	 */
+	if (uip_connected())
+		PSOCK_INIT(&s->p, s->inputbuffer, sizeof(s->inputbuffer));
 
-  /*
-   * Finally, we run the protosocket function that actually handles
-   * the communication. We pass it a pointer to the application state
-   * of the current connection.
-   */
-  handle_connection(s);
+	/*
+	 * Finally, we run the protosocket function that actually handles
+	 * the communication. We pass it a pointer to the application state
+	 * of the current connection.
+	 */
+	handle_connection(s);
 }
 /*---------------------------------------------------------------------------*/
 /*
@@ -86,15 +85,15 @@ hello_world_appcall(void)
 static int
 handle_connection(struct hello_world_state *s)
 {
-  PSOCK_BEGIN(&s->p);
+	PSOCK_BEGIN(&s->p);
 
-  PSOCK_SEND_STR(&s->p, "Hello. What is your name?\n");
-  PSOCK_READTO(&s->p, '\n');
-  strncpy(s->name, s->inputbuffer, sizeof(s->name));
-  PSOCK_SEND_STR(&s->p, "Hello ");
-  PSOCK_SEND_STR(&s->p, s->name);
-  PSOCK_CLOSE(&s->p);
-  
-  PSOCK_END(&s->p);
+	PSOCK_SEND_STR(&s->p, "Hello. What is your name?\n");
+	PSOCK_READTO(&s->p, '\n');
+	strncpy(s->name, s->inputbuffer, sizeof(s->name));
+	PSOCK_SEND_STR(&s->p, "Hello ");
+	PSOCK_SEND_STR(&s->p, s->name);
+	PSOCK_CLOSE(&s->p);
+
+	PSOCK_END(&s->p);
 }
 /*---------------------------------------------------------------------------*/

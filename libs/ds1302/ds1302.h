@@ -7,7 +7,7 @@
 
 #ifndef RTC_CE
 #error "RTC_CE not set"
-#endif 
+#endif
 
 #ifndef RTC_SCK
 #error "RTC_SCK not set"
@@ -28,11 +28,11 @@
 #error "RTC_IO_PORT not set"
 #endif
 
-#ifndef RTC_IO_PIN 
+#ifndef RTC_IO_PIN
 #error "RTC_IO_PIN not set"
 #endif
 
-#ifndef RTC_IO_DDR 
+#ifndef RTC_IO_DDR
 #error "RTC_IO_DDR not set"
 #endif
 
@@ -48,7 +48,7 @@
  *	\param		*address_ptr    Pointer to location to store returned values
  *
  */
-void read_from_rtc(uint8_t command,uint8_t bytes,uint8_t* address_ptr);
+void read_from_rtc(uint8_t command, uint8_t bytes, uint8_t *address_ptr);
 
 
 
@@ -60,7 +60,7 @@ void read_from_rtc(uint8_t command,uint8_t bytes,uint8_t* address_ptr);
  *				There is no checking that the data is sensible, or that bytes is the correct number for command
  *
  */
-void write_to_rtc(uint8_t command,uint8_t bytes,uint8_t* data_ptr);
+void write_to_rtc(uint8_t command, uint8_t bytes, uint8_t *data_ptr);
 
 
 
@@ -69,17 +69,17 @@ void write_to_rtc(uint8_t command,uint8_t bytes,uint8_t* data_ptr);
  *
  *				Clock values are 8 bytes:  ss,mm,hh,dd,mm,dow,yy,0;
  */
-void send_time_to_rtc(uint8_t* time_ptr);
+void send_time_to_rtc(uint8_t *time_ptr);
 
 
 
 
-/** \brief		Read a set of data from the DS1302 Real time clock into memory 
+/** \brief		Read a set of data from the DS1302 Real time clock into memory
  *	\param		*address_ptr   Pointer to location in memory of first byte of set of data
  *
  *
  */
-void read_time(uint8_t* address_ptr);
+void read_time(uint8_t *address_ptr);
 
 
 
@@ -107,12 +107,12 @@ uint8_t bcd_to_hex(uint8_t bcd);
 
 
 /** \brief		Create a 7 byte directory name with date/time value
- *	\param		*time_store 	memory location of 7 bytes of the time to be converted. 
+ *	\param		*time_store 	memory location of 7 bytes of the time to be converted.
  *	\param		*dirname 		directory name to be created.
  *
  *				Note that this function only converts. It doesn't update *time_store with the correct time
  *
- *				dirname is overwritten with  yymddhh    
+ *				dirname is overwritten with  yymddhh
  *				m is 1-12 value expressed in Hex (eg C for December).
  *				Other values (BCD from the clock) are copied as is, without any conversion.
  *				eg 20101215 13:16:56  ->  11C1513
@@ -126,12 +126,12 @@ uint8_t bcd_to_hex(uint8_t bcd);
 
 
 /** \brief		Create or overwrite a filename with date/time value
- *	\param		*time_store 	memory location of 7 bytes of the time to be converted. 
+ *	\param		*time_store 	memory location of 7 bytes of the time to be converted.
  *	\param		*filename 		filename name to be created or overwritten.
  *
  *				Note that this function only converts. It doesn't update *time_store with the correct time
  *
- *		IMPORTANT		Several characters of filename are NOT changed or set. 
+ *		IMPORTANT		Several characters of filename are NOT changed or set.
  *						Make sure you set it to a valid character or the filesystem will generate an error.
  *
  *		filename is overwritten with ^mddhhmm^ss^    where positions with ^ are unchanged
@@ -149,15 +149,15 @@ uint8_t bcd_to_hex(uint8_t bcd);
 
 
 /** \brief		Converts a time stored in memory (typically from a Real Time Clock chip) into ISO order
- *	\param		*time_store 		memory location of 7 bytes of the time to be converted. 
- *	\param		*iso_time_store 	memory location for the 16 byte result. 
+ *	\param		*time_store 		memory location of 7 bytes of the time to be converted.
+ *	\param		*iso_time_store 	memory location for the 16 byte result.
  *
  *				Note that this function only converts. It doesn't update *time_store with the correct time
  *
  *				time_store format is   ss,mm,hh,dd,mm,dow,yy     yy counts from 2000
  *				iso_time_store shows   "20yymmdd hhmmss"		 16 bytes including trailing null making it a string.
  */
-void iso_time(uint8_t *time_store,uint8_t *iso_time_store);
+void iso_time(uint8_t *time_store, uint8_t *iso_time_store);
 
 //uint8_t hex2ascii_h(uint8_t hexval);
 //uint8_t hex2ascii_l(uint8_t hexval);

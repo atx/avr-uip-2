@@ -18,12 +18,12 @@
 #define UDRE				UDRE0
 
 
-	
+
 #define SIG_UART_TRANS		SIG_USART_TRANS
 #define SIG_UART_RECV		SIG_USART_RECV
 #define SIG_UART_DATA		SIG_USART_DATA
 
 void USART_Init(unsigned int);
-void sendString(char* string);
-void USART_Transmit( unsigned char data );
+void sendString(char *string);
+void USART_Transmit(unsigned char data);
 void USART_vSendByte(uint8_t u8Data);

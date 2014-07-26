@@ -33,21 +33,15 @@ void multi_set74x595(uint8_t *banks, uint8_t bank_count)
 {
 	int8_t bank_index;
 
-	for (bank_index=0; bank_index < bank_count; bank_index++)
-	{
-		uint8_t i=8;
-		while(i)
-		{
+	for (bank_index = 0; bank_index < bank_count; bank_index++) {
+		uint8_t i = 8;
+		while (i) {
 			i--;
 			S74595_CLOCKDOWN;
-			if ((*(banks + bank_index)) & (1<<i))
-			{
+			if ((*(banks + bank_index)) & (1 << i))
 				S74595_1;
-			}
 			else
-			{
 				S74595_0;
-			}
 			S74595_CLOCKUP;
 			nop();
 		}
@@ -63,42 +57,41 @@ void multi_set74x595(uint8_t *banks, uint8_t bank_count)
 #ifndef MULTI_SUPPORT_74x595
 void set74x595(uint8_t val)
 {
-      uint8_t i=8;
-      while(i){
-              i--;
-              S74595_CLOCKDOWN;
-              if (val & (1<<i)){
-                      S74595_1;
-              }else{
-                      S74595_0;
-              }
-              S74595_CLOCKUP;
-              nop();
-      }
-      S74595_CLOCKDOWN;
-      S74595_RCLKUP;
-      nop();
-      S74595_RCLKDOWN;
+	uint8_t i = 8;
+	while (i) {
+		i--;
+		S74595_CLOCKDOWN;
+		if (val & (1 << i))
+			S74595_1;
+		else
+			S74595_0;
+		S74595_CLOCKUP;
+		nop();
+	}
+	S74595_CLOCKDOWN;
+	S74595_RCLKUP;
+	nop();
+	S74595_RCLKDOWN;
 }
 #endif
 
 void init74x595(void)
 {
-        DDRC|= (1<<DDC4); // enable as output line
-        S74595_RCLKDOWN;
-        DDRC|= (1<<DDC5); // enable as output line
-        S74595_0;
-        DDRC|= (1<<DDC3); // enable as output line
-        S74595_CLOCKDOWN;
+	DDRC |= (1 << DDC4); // enable as output line
+	S74595_RCLKDOWN;
+	DDRC |= (1 << DDC5); // enable as output line
+	S74595_0;
+	DDRC |= (1 << DDC3); // enable as output line
+	S74595_CLOCKDOWN;
 #ifdef MULTI_SUPPORT_74x595
 
-#else		
-        set74x595(0);
+#else
+	set74x595(0);
 #endif
 }
 
 /*
-        while(switchnum<MAX_RELAY){ 
+        while(switchnum<MAX_RELAY){
                 if (PORTD & (1<<relay2port[switchnum])){
                         pl=fill_tcp_data_p(buf,pl,PSTR("ON "));
                 }else{
@@ -123,7 +116,7 @@ void init74x595(void)
 #ifdef USE_74595
         pl=fill_tcp_data(buf,pl,"\n");
         switchnum=0;
-        while(switchnum<8){ // port extended switch 0..7 via 74hc595 
+        while(switchnum<8){ // port extended switch 0..7 via 74hc595
                 if (e74595val & (1<<switchnum)){
                         pl=fill_tcp_data_p(buf,pl,PSTR("ON "));
                 }else{
@@ -200,7 +193,7 @@ void init74x595(void)
 */
 
 
-/* 
+/*
 #ifdef USE_74595
         init74595(); // it is best to do 74hc595 init right after power on
 #endif

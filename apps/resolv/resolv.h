@@ -58,7 +58,7 @@ void resolv_appcall(void);
 
 #ifndef RESOLV_COUNTER_2
 #define RESOLV_COUNTER_2 30 // @ 1 sec / poll call this is will be 2 hours
-#endif 
+#endif
 
 #include "uipopt.h"
 
@@ -84,11 +84,11 @@ void resolv_query(char *name);
 
 
 #if defined PORT_APP_MAPPER
-	#define RESOLV_APP_CALL_MAP {resolv_appcall, 0, 53},
+#define RESOLV_APP_CALL_MAP {resolv_appcall, 0, 53},
 #else
-	#define RESOLV_APP_CALL_MAP
-	#define UIP_UDP_APPCALL resolv_appcall
-	typedef int uip_udp_appstate_t;
+#define RESOLV_APP_CALL_MAP
+#define UIP_UDP_APPCALL resolv_appcall
+typedef int uip_udp_appstate_t;
 #endif
 
 #endif /* __RESOLV_H__ */

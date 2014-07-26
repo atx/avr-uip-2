@@ -2,7 +2,7 @@
 //*****************************************************************************
 //
 // File Name	: 'global.h'
-// Title		: AVRlib project global include 
+// Title		: AVRlib project global include
 // Author		: Pascal Stang - Copyright (C) 2001-2002
 // Created		: 7/12/2001
 // Revised		: 9/30/2002
@@ -30,8 +30,8 @@
 
 
 #ifndef F_CPU
-    #error "F_CPU MUST BE DEFINED" 
-#endif 
+#error "F_CPU MUST BE DEFINED"
+#endif
 
 // project/system dependent defines
 #define CYCLES_PER_US ((F_CPU+500000)/1000000) 	// cpu cycles per microsecond

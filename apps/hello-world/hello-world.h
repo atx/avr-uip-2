@@ -34,9 +34,9 @@
    allocated together with each TCP connection. One application state
    for each TCP connection. */
 typedef struct hello_world_state {
-  struct psock p;
-  char inputbuffer[10];
-  char name[40];
+	struct psock p;
+	char inputbuffer[10];
+	char name[40];
 } uip_tcp_appstate_t;
 
 /* Finally we define the application function to be called by uIP. */

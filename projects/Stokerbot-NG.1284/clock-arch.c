@@ -19,27 +19,28 @@ ISR(TIMER1_COMPA_vect)
 {
 	clock_datetime += 1;
 	tick++;
-	
-  if (tickDiff(seconds) >= 500)
-  {
-  	tickS++;
-	  seconds = tick;
-  }	
+
+	if (tickDiff(seconds) >= 500) {
+		tickS++;
+		seconds = tick;
+	}
 }
 
 //Initialise the clock
-void clock_init(){
-   TCCR1B |= (1 << WGM12) | (1 << CS12); // Configure timer 1 for CTC mode
-   OCR1A   = 125; // Compare value 125
-   TCCR1A |= (1 << CS12); // Start timer at Fcpu/256
-   
-   TIMSK1 |= (1 << OCIE1A); // Enable CTC interrupt
-     
-   sei();
+void clock_init()
+{
+	TCCR1B |= (1 << WGM12) | (1 << CS12); // Configure timer 1 for CTC mode
+	OCR1A   = 125; // Compare value 125
+	TCCR1A |= (1 << CS12); // Start timer at Fcpu/256
+
+	TIMSK1 |= (1 << OCIE1A); // Enable CTC interrupt
+
+	sei();
 }
 
 //Return time
-clock_time_t clock_time(){
+clock_time_t clock_time()
+{
 	return clock_datetime;
 }
 

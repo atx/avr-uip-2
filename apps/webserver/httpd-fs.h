@@ -38,8 +38,8 @@
 #define HTTPD_FS_STATISTICS 1
 
 struct httpd_fs_file {
-  char *data;
-  int len;
+	char *data;
+	int len;
 };
 
 /* file must be allocated by caller and will be filled in

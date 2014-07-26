@@ -1,8 +1,8 @@
 #ifndef SBDEF
-  #define SBDEF
-  #include <stdio.h>
-  #include "config.h"
-  #include "AVR035.h"
+#define SBDEF
+#include <stdio.h>
+#include "config.h"
+#include "AVR035.h"
 
 #define EEPROM_VERSION 2
 #define SBNG_VERSION_MAJOR 3
@@ -26,8 +26,8 @@
 //Sensor array
 enum SensorData { FAMILY, ID1, ID2, ID3, ID4, ID5, ID6, CRC, VALUE1, VALUE2, SIGN };
 
-uint8_t sensorValues[MAXSENSORS*SENSORSIZE];
-uint8_t sensorScan[MAXSENSORS*8]; //Kan evt. pege på tempbuf som i R2
+uint8_t sensorValues[MAXSENSORS *SENSORSIZE];
+uint8_t sensorScan[MAXSENSORS * 8]; //Kan evt. pege på tempbuf som i R2
 //char tempbuf[MAXSENSORS*8];  //atleast 250byte
 char tempbuf[1024];  //atleast 250byte
 

@@ -59,16 +59,16 @@ typedef PT_THREAD((* httpd_cgifunction)(struct httpd_state *, char *));
 httpd_cgifunction httpd_cgi(const char *name);
 
 struct httpd_cgi_call {
-  const char *name;
-  const httpd_cgifunction function;
+	const char *name;
+	const httpd_cgifunction function;
 };
 
 #if defined(HTTP_POST_SUPPORT)
 httpd_cgifunction httpd_cgi_post(const char *name);
 
 struct httpd_cgi_post_call {
-  const char *name;
-  const httpd_cgifunction function;
+	const char *name;
+	const httpd_cgifunction function;
 };
 #endif
 /**
@@ -89,7 +89,7 @@ static PT_THREAD(function(struct httpd_state *, char *)); \
 static const struct httpd_cgi_call name = {str, function}
 
 #define HTTPD_CGI_POST_CALL(name, str, function) \
-HTTPD_CGI_CALL(name, str, function) 
+HTTPD_CGI_CALL(name, str, function)
 
 
 void httpd_cgi_init(void);

@@ -63,8 +63,8 @@
 void
 timer32_set(struct timer32 *t, clock_time32_t interval)
 {
-  t->interval = interval;
-  t->start = clock_time32();
+	t->interval = interval;
+	t->start = clock_time32();
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -83,7 +83,7 @@ timer32_set(struct timer32 *t, clock_time32_t interval)
 void
 timer32_reset(struct timer32 *t)
 {
-  t->start += t->interval;
+	t->start += t->interval;
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -103,7 +103,7 @@ timer32_reset(struct timer32 *t)
 void
 timer32_restart(struct timer32 *t)
 {
-  t->start = clock_time32();
+	t->start = clock_time32();
 }
 /*---------------------------------------------------------------------------*/
 /**
@@ -120,7 +120,8 @@ timer32_restart(struct timer32 *t)
 bool
 timer32_expired(struct timer32 *t)
 {
-  return (clock_time32_t)(clock_time32() - t->start) >= (clock_time32_t)t->interval;
+	return (clock_time32_t)(clock_time32() - t->start) >= (clock_time32_t)
+	       t->interval;
 }
 /*---------------------------------------------------------------------------*/
 

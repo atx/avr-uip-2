@@ -23,7 +23,7 @@
 #define ENC28J60_SPI_PORT		PORTB
 #define ENC28J60_SPI_DDR		DDRB
 
-// pre ATMega328p 
+// pre ATMega328p
 #ifdef PB5
 #define ENC28J60_SPI_SCK		PB5
 #define ENC28J60_SPI_MOSI		PB3

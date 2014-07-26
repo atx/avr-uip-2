@@ -93,155 +93,134 @@ int bob = 986;
 
 int main(void)
 {
-    /* Disable watchdog if enabled by bootloader/fuses */
-    MCUSR &= ~(1 << WDRF);
-    wdt_disable();
+	/* Disable watchdog if enabled by bootloader/fuses */
+	MCUSR &= ~(1 << WDRF);
+	wdt_disable();
 
 
-//led_conf();
+	//led_conf();
 
-    CLKPR=(1<<CLKPCE); // change enable
-    CLKPR=0; // "no pre-scaler"
-    _delay_loop_1(0); // 60us
+	CLKPR = (1 << CLKPCE); // change enable
+	CLKPR = 0; // "no pre-scaler"
+	_delay_loop_1(0); // 60us
 
-    int i;
-    struct timer periodic_timer, arp_timer, sensor_timer;
+	int i;
+	struct timer periodic_timer, arp_timer, sensor_timer;
 
-    clock_init();
+	clock_init();
 
-    timer_set(&periodic_timer, CLOCK_SECOND);
-    timer_set(&arp_timer, CLOCK_SECOND * 10);
-    timer_set(&sensor_timer, CLOCK_SECOND * 20);
+	timer_set(&periodic_timer, CLOCK_SECOND);
+	timer_set(&arp_timer, CLOCK_SECOND * 10);
+	timer_set(&sensor_timer, CLOCK_SECOND * 20);
 
-    uip_init();
+	uip_init();
 
-    // must be done or sometimes arp doesn't work
-    uip_arp_init();
-    
-    // load the network configs from eeprom
-    net_conf_init();
+	// must be done or sometimes arp doesn't work
+	uip_arp_init();
 
-    network_init_mac(net_conf_get_mac());
+	// load the network configs from eeprom
+	net_conf_init();
 
-    // init temp array
-    for( i = 0; i < NUM_TEMP_SENSORS; i++)
-    {
-        temp_sensors[i] = 0;
-    }
+	network_init_mac(net_conf_get_mac());
 
-    if (net_conf_is_dhcpc())
-    {
-        // setup the dhcp renew timer the make the first request
-        timer_set(&dhcp_timer, CLOCK_SECOND * 600); // 10 minutes till renew
-        dhcpc_init(net_conf_get_mac(), 6);
-        dhcpc_request();
-    }
+	// init temp array
+	for (i = 0; i < NUM_TEMP_SENSORS; i++)
+		temp_sensors[i] = 0;
+
+	if (net_conf_is_dhcpc()) {
+		// setup the dhcp renew timer the make the first request
+		timer_set(&dhcp_timer, CLOCK_SECOND * 600); // 10 minutes till renew
+		dhcpc_init(net_conf_get_mac(), 6);
+		dhcpc_request();
+	}
 
 	uip_ipaddr_t ipaddr;
-    resolv_init();
-    uip_ipaddr(ipaddr, 8, 8, 8, 8);
-    resolv_conf(ipaddr);
-    webclient_init();
+	resolv_init();
+	uip_ipaddr(ipaddr, 8, 8, 8, 8);
+	resolv_conf(ipaddr);
+	webclient_init();
 
 	// start hosted services
-    telnetd_init();
-    httpd_init();
+	telnetd_init();
+	httpd_init();
 	//a2dInit();
 	USART_Init(95);
-//	sendString("\E[H\E[J");
+	//	sendString("\E[H\E[J");
 	sendString("Booting Biomass Ethernet\r\n");
-	
+
 	//eeprom_update_byte  (&ee_tmp, net_conf_enable_dhcp);
 	//eeprom_read_block ((void *)temp_data, (const void *)&ee_tmp,4);
 
-	while(1)
-    {
-        
-        if(timer_expired(&sensor_timer))
-        {
-sendString("Calling webclient\r\n");
-            timer_reset(&sensor_timer);
+	while (1) {
+
+		if (timer_expired(&sensor_timer)) {
+			sendString("Calling webclient\r\n");
+			timer_reset(&sensor_timer);
 			//read_sensors();
-            webclient_get_P(PSTR("pyroperformances.com"), 80, PSTR("/index.html"));
-        }
+			webclient_get_P(PSTR("pyroperformances.com"), 80, PSTR("/index.html"));
+		}
 
 		uip_len = network_read();
-        if(uip_len > 0)
-        {
-            if(BUF->type == htons(UIP_ETHTYPE_IP))
-            {
-                uip_arp_ipin(); // arp seems to have issues w/o this
-                uip_input();
-                if(uip_len > 0)
-                {
-                    uip_arp_out();
-                    network_send();
-                }
-            }
-            else if(BUF->type == htons(UIP_ETHTYPE_ARP))
-            {
-                uip_arp_arpin(); // this is correct
-                if(uip_len > 0)
-                {
-                    network_send();
-                }
-            }
-        }
-        else if(timer_expired(&periodic_timer))
-        {
-            timer_reset(&periodic_timer);
+		if (uip_len > 0) {
+			if (BUF->type == htons(UIP_ETHTYPE_IP)) {
+				uip_arp_ipin(); // arp seems to have issues w/o this
+				uip_input();
+				if (uip_len > 0) {
+					uip_arp_out();
+					network_send();
+				}
+			} else if (BUF->type == htons(UIP_ETHTYPE_ARP)) {
+				uip_arp_arpin(); // this is correct
+				if (uip_len > 0)
+					network_send();
+			}
+		} else if (timer_expired(&periodic_timer)) {
+			timer_reset(&periodic_timer);
 
-            for(i = 0; i < UIP_CONNS; i++)
-            {
-                uip_periodic(i);
-                if(uip_len > 0)
-                {
-                    uip_arp_out();
-                    network_send();
-                }
-            }
+			for (i = 0; i < UIP_CONNS; i++) {
+				uip_periodic(i);
+				if (uip_len > 0) {
+					uip_arp_out();
+					network_send();
+				}
+			}
 
-            #if UIP_UDP
-            for(i = 0; i < UIP_UDP_CONNS; i++)
-            {
-                uip_udp_periodic(i);
-                if(uip_len > 0)
-                {
-                    uip_arp_out();
-                    network_send();
-                }
-            }
-            #endif /* UIP_UDP */
+#if UIP_UDP
+			for (i = 0; i < UIP_UDP_CONNS; i++) {
+				uip_udp_periodic(i);
+				if (uip_len > 0) {
+					uip_arp_out();
+					network_send();
+				}
+			}
+#endif /* UIP_UDP */
 
-            if(timer_expired(&arp_timer))
-            {
-                timer_reset(&arp_timer);
-                uip_arp_timer();
-            }
-        }
-        else if (net_conf_is_dhcpc() && timer_expired(&dhcp_timer))
-        {
-            timer_reset(&dhcp_timer);
-            dhcpc_renew();
-        }
-    }
+			if (timer_expired(&arp_timer)) {
+				timer_reset(&arp_timer);
+				uip_arp_timer();
+			}
+		} else if (net_conf_is_dhcpc() && timer_expired(&dhcp_timer)) {
+			timer_reset(&dhcp_timer);
+			dhcpc_renew();
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 #if UIP_CONF_LOGGING == 1
 void uip_log_P(char *m)
 {
-    char mstring[100];
-    sprintf_P(mstring, "%s", m);
-    uip_log(m);
+	char mstring[100];
+	sprintf_P(mstring, "%s", m);
+	uip_log(m);
 }
 
 void uip_log(char *m)
 {
-//    sendString(m);
-    sendString(m);
-    //TODO: Get debug information out here somehow, does anybody know a smart way to do that?
+	//    sendString(m);
+	sendString(m);
+	//TODO: Get debug information out here somehow, does anybody know a smart way to do that?
 }
 #endif
 

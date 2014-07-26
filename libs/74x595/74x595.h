@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "global-conf.h"
 
-#ifndef S74595_0 
+#ifndef S74595_0
 #error "74x595.h - pins not defined. Please define in global-conf.h"
 #endif
 

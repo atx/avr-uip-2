@@ -28,14 +28,14 @@ volatile uint16_t volt, cur;
 
 int main(void)
 {
-    /* Disable watchdog if enabled by bootloader/fuses */
-    MCUSR &= ~(1 << WDRF);
-    wdt_disable();
+	/* Disable watchdog if enabled by bootloader/fuses */
+	MCUSR &= ~(1 << WDRF);
+	wdt_disable();
 
 	network_init();
 
 
-	CLKPR = (1<<CLKPCE);	//Change prescaler
+	CLKPR = (1 << CLKPCE);	//Change prescaler
 	CLKPR = 0;	//Use prescaler 2
 	//CLKPR = (1<<CLKPS0);	//Use prescaler 2
 	_delay_loop_1(0);
@@ -51,26 +51,26 @@ int main(void)
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
 
 	uip_init();
-    // must be done or sometimes arp doesn't work
-    uip_arp_init();
-	
+	// must be done or sometimes arp doesn't work
+	uip_arp_init();
+
 	// load the network configs from eeprom
 	net_conf_init();
 
-    // start telnet server
+	// start telnet server
 	telnetd_init();
 
 	// set up the udp data stream
 	// configure the target system ip and port
 	uip_ipaddr_t ipaddr;
-	uip_ipaddr(&ipaddr, 192,168,2,99);
+	uip_ipaddr(&ipaddr, 192, 168, 2, 99);
 	udpds_conf(ipaddr, 33, 8);
 
 
 	adc_init();
 
 
-	while(1){
+	while (1) {
 
 		volt = read_adc(0);
 		volt = ((((float)volt) / 1024) * 3300 * 2);
@@ -78,44 +78,43 @@ int main(void)
 
 		uip_len = network_read();
 
-		if(uip_len > 0) {
-			if(BUF->type == htons(UIP_ETHTYPE_IP)){
+		if (uip_len > 0) {
+			if (BUF->type == htons(UIP_ETHTYPE_IP)) {
 				uip_arp_ipin(); // arp seems to have issues w/o this
 				uip_input();
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
-			}else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
+			} else if (BUF->type == htons(UIP_ETHTYPE_ARP)) {
 				uip_arp_arpin(); // this is correct
-				if(uip_len > 0){
+				if (uip_len > 0)
 					network_send();
-				}
 			}
 
-		}else if(timer_expired(&periodic_timer)) {
+		} else if (timer_expired(&periodic_timer)) {
 			timer_reset(&periodic_timer);
 
 
-			for(i = 0; i < UIP_CONNS; i++) {
+			for (i = 0; i < UIP_CONNS; i++) {
 				uip_periodic(i);
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
 			}
 
-			#if UIP_UDP
-			for(i = 0; i < UIP_UDP_CONNS; i++) {
+#if UIP_UDP
+			for (i = 0; i < UIP_UDP_CONNS; i++) {
 				uip_udp_periodic(i);
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
 			}
-			#endif /* UIP_UDP */
+#endif /* UIP_UDP */
 
-			if(timer_expired(&arp_timer)) {
+			if (timer_expired(&arp_timer)) {
 				timer_reset(&arp_timer);
 				uip_arp_timer();
 			}
@@ -127,7 +126,7 @@ int main(void)
 #if UIP_CONF_LOGGING == 1
 void uip_log(char *m)
 {
-//	sendString(m);
+	//	sendString(m);
 	printf("%s", m);
 	//TODO: Get debug information out here somehow, does anybody know a smart way to do that?
 }
@@ -137,7 +136,7 @@ void uip_log(char *m)
 
 int udpds_set_payload(void)
 {
-  return (1 + sprintf((char *)uip_appdata,"volt: %d cur: %d\n", volt, cur));
+	return (1 + sprintf((char *)uip_appdata, "volt: %d cur: %d\n", volt, cur));
 }
 
 

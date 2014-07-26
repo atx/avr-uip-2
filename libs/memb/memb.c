@@ -38,11 +38,11 @@
  * @{
  */
 
- /**
- * \file
- * Memory block allocation routines.
- * \author Adam Dunkels <adam@sics.se>
- */
+/**
+* \file
+* Memory block allocation routines.
+* \author Adam Dunkels <adam@sics.se>
+*/
 #include <string.h>
 
 #include "memb.h"
@@ -51,53 +51,53 @@
 void
 memb_init(struct memb_blocks *m)
 {
-  memset(m->count, 0, m->num);
-  memset(m->mem, 0, m->size * m->num);
+	memset(m->count, 0, m->num);
+	memset(m->mem, 0, m->size * m->num);
 }
 /*---------------------------------------------------------------------------*/
 void *
 memb_alloc(struct memb_blocks *m)
 {
-  int i;
+	int i;
 
-  for(i = 0; i < m->num; ++i) {
-    if(m->count[i] == 0) {
-      /* If this block was unused, we increase the reference count to
-	 indicate that it now is used and return a pointer to the
-	 memory block. */
-      ++(m->count[i]);
-      return (void *)((char *)m->mem + (i * m->size));
-    }
-  }
+	for (i = 0; i < m->num; ++i) {
+		if (m->count[i] == 0) {
+			/* If this block was unused, we increase the reference count to
+			indicate that it now is used and return a pointer to the
+			 memory block. */
+			++(m->count[i]);
+			return (void *)((char *)m->mem + (i * m->size));
+		}
+	}
 
-  /* No free block was found, so we return NULL to indicate failure to
-     allocate block. */
-  return NULL;
+	/* No free block was found, so we return NULL to indicate failure to
+	   allocate block. */
+	return NULL;
 }
 /*---------------------------------------------------------------------------*/
 char
 memb_free(struct memb_blocks *m, void *ptr)
 {
-  int i;
-  char *ptr2;
+	int i;
+	char *ptr2;
 
-  /* Walk through the list of blocks and try to find the block to
-     which the pointer "ptr" points to. */
-  ptr2 = (char *)m->mem;
-  for(i = 0; i < m->num; ++i) {
-    
-    if(ptr2 == (char *)ptr) {
-      /* We've found to block to which "ptr" points so we decrease the
-	 reference count and return the new value of it. */
-      if(m->count[i] > 0) {
-	/* Make sure that we don't deallocate free memory. */
-	--(m->count[i]);
-      }
-      return m->count[i];
-    }
-    ptr2 += m->size;
-  }
-  return -1;
+	/* Walk through the list of blocks and try to find the block to
+	   which the pointer "ptr" points to. */
+	ptr2 = (char *)m->mem;
+	for (i = 0; i < m->num; ++i) {
+
+		if (ptr2 == (char *)ptr) {
+			/* We've found to block to which "ptr" points so we decrease the
+			reference count and return the new value of it. */
+			if (m->count[i] > 0) {
+				/* Make sure that we don't deallocate free memory. */
+				--(m->count[i]);
+			}
+			return m->count[i];
+		}
+		ptr2 += m->size;
+	}
+	return -1;
 }
 /*---------------------------------------------------------------------------*/
 

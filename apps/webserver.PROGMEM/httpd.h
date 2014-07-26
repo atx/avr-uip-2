@@ -40,39 +40,39 @@
 #include "httpd-fs.h"
 
 #if defined(UIP_REASSEMBLY)
-  #if UIP_REASSEMBLY == 0
-    #if defined(HTTPD_FRAGMENTS)
-	  #warning "If you use a web browser with this httpd you should have UIP_REASSEMBLY=1"
-    #else
-      #error "For most modern web browsers you need to have UIP_REASSEMBLY=1 in order to decode most TCP packets as they become fragmented.  If you will not be accessing this server with a full web browser then define HTTPD_FRAGMENTS"
-	#endif
-  #endif
+#if UIP_REASSEMBLY == 0
+#if defined(HTTPD_FRAGMENTS)
+#warning "If you use a web browser with this httpd you should have UIP_REASSEMBLY=1"
+#else
+#error "For most modern web browsers you need to have UIP_REASSEMBLY=1 in order to decode most TCP packets as they become fragmented.  If you will not be accessing this server with a full web browser then define HTTPD_FRAGMENTS"
+#endif
+#endif
 #endif
 
 #define GET  0
 #define POST 1
 
 struct httpd_state {
-  unsigned char timer;
-  struct psock sin, sout;
-  struct pt outputpt, scriptpt;
-  char inputbuf[50];
-  char filename[20];
-  char state;
-  char request_type; /* get (0), post(1) */
-  struct httpd_fs_file file;
-  int len;
-  PGM_P scriptptr;
-  int scriptlen;
-  int tmp_int;
-  char *tmp_charp;
-  char tmp_str[30];
+	unsigned char timer;
+	struct psock sin, sout;
+	struct pt outputpt, scriptpt;
+	char inputbuf[50];
+	char filename[20];
+	char state;
+	char request_type; /* get (0), post(1) */
+	struct httpd_fs_file file;
+	int len;
+	PGM_P scriptptr;
+	int scriptlen;
+	int tmp_int;
+	char *tmp_charp;
+	char tmp_str[30];
 
-  unsigned short count;
+	unsigned short count;
 
 #if defined(HTTP_POST_SUPPORT) || defined(HTTP_GET_PARAM_SUPPORT)
-  char    param[MAX_PARAM_DATA];
-  uint16_t param_len;
+	char    param[MAX_PARAM_DATA];
+	uint16_t param_len;
 #endif
 };
 
@@ -94,14 +94,14 @@ void httpd_log_file(u16_t *requester, char *file);
 #define ISO_question  0x3F
 
 #if defined PORT_APP_MAPPER
-	#define WEBSERVER_APP_CALL_MAP {httpd_appcall, 80, 0},
-	#if !defined HTTPD_MAX_CONNECTIONS
-		#define HTTPD_MAX_CONNECTIONS UIP_CONF_MAX_CONNECTIONS
-	#endif
-	struct httpd_state httpd_state_list[HTTPD_MAX_CONNECTIONS];
+#define WEBSERVER_APP_CALL_MAP {httpd_appcall, 80, 0},
+#if !defined HTTPD_MAX_CONNECTIONS
+#define HTTPD_MAX_CONNECTIONS UIP_CONF_MAX_CONNECTIONS
+#endif
+struct httpd_state httpd_state_list[HTTPD_MAX_CONNECTIONS];
 #else
-	#define WEBSERVER_APP_CALL_MAP
-	typedef struct httpd_state uip_tcp_appstate_t;
+#define WEBSERVER_APP_CALL_MAP
+typedef struct httpd_state uip_tcp_appstate_t;
 #endif
 
 #endif /* __HTTPD_H__ */

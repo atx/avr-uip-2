@@ -34,8 +34,8 @@ int main(void)
 
 	network_init();
 
-	CLKPR = (1<<CLKPCE);	//Change prescaler
-	CLKPR = (1<<CLKPS0);	//Use prescaler 2
+	CLKPR = (1 << CLKPCE);	//Change prescaler
+	CLKPR = (1 << CLKPS0);	//Use prescaler 2
 	enc28j60Write(ECOCON, 1 & 0x7);	//Get a 25MHz signal from enc28j60
 
 	int i;
@@ -48,75 +48,74 @@ int main(void)
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
 
 	uip_init();
-	
+
 	struct uip_eth_addr mac = {UIP_ETHADDR0, UIP_ETHADDR1, UIP_ETHADDR2, UIP_ETHADDR3, UIP_ETHADDR4, UIP_ETHADDR5};
 
 	uip_setethaddr(mac);
 	simple_httpd_init();
-//    httpd_init();
+	//    httpd_init();
 
 #ifdef __DHCPC_H__
 	dhcpc_init(&mac, 6);
 #else
-    uip_ipaddr(ipaddr, 192,168,2,55);
-    uip_sethostaddr(ipaddr);
-    uip_ipaddr(ipaddr, 192,168,2,1);
-    uip_setdraddr(ipaddr);
-    uip_ipaddr(ipaddr, 255,255,255,0);
-    uip_setnetmask(ipaddr);
-
-/*	uip_ipaddr(ipaddr, 192,167,0,255);
+	uip_ipaddr(ipaddr, 192, 168, 2, 55);
 	uip_sethostaddr(ipaddr);
-	uip_ipaddr(ipaddr, 192,167,0,254);
+	uip_ipaddr(ipaddr, 192, 168, 2, 1);
 	uip_setdraddr(ipaddr);
-	uip_ipaddr(ipaddr, 255,255,0,0);
+	uip_ipaddr(ipaddr, 255, 255, 255, 0);
 	uip_setnetmask(ipaddr);
-*/
+
+	/*	uip_ipaddr(ipaddr, 192,167,0,255);
+		uip_sethostaddr(ipaddr);
+		uip_ipaddr(ipaddr, 192,167,0,254);
+		uip_setdraddr(ipaddr);
+		uip_ipaddr(ipaddr, 255,255,0,0);
+		uip_setnetmask(ipaddr);
+	*/
 #endif /*__DHCPC_H__*/
 
 
-	while(1){
+	while (1) {
 		uip_len = network_read();
 
-		if(uip_len > 0) {
-			if(BUF->type == htons(UIP_ETHTYPE_IP)){
+		if (uip_len > 0) {
+			if (BUF->type == htons(UIP_ETHTYPE_IP)) {
 				uip_arp_ipin();
 				uip_input();
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
-			}else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
+			} else if (BUF->type == htons(UIP_ETHTYPE_ARP)) {
 				uip_arp_arpin();
-				if(uip_len > 0){
+				if (uip_len > 0)
 					network_send();
-				}
 			}
 
-		}else if(timer_expired(&periodic_timer)) {
+		} else if (timer_expired(&periodic_timer)) {
 			timer_reset(&periodic_timer);
 
 			led_blink();
 
-			for(i = 0; i < UIP_CONNS; i++) {
+			for (i = 0; i < UIP_CONNS; i++) {
 				uip_periodic(i);
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
 			}
 
-			#if UIP_UDP
-			for(i = 0; i < UIP_UDP_CONNS; i++) {
+#if UIP_UDP
+			for (i = 0; i < UIP_UDP_CONNS; i++) {
 				uip_udp_periodic(i);
-				if(uip_len > 0) {
+				if (uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
 			}
-			#endif /* UIP_UDP */
+#endif /* UIP_UDP */
 
-			if(timer_expired(&arp_timer)) {
+			if (timer_expired(&arp_timer)) {
 				timer_reset(&arp_timer);
 				uip_arp_timer();
 			}
@@ -137,7 +136,7 @@ void uip_log(char *m)
 resolv_found(char *name, u16_t *ipaddr)
 {
 	u16_t *ipaddr2;
-	
+
 	if(ipaddr == NULL) {
 		printf("Host '%s' not found.\n", name);
 	} else {

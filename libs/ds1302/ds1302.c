@@ -31,7 +31,7 @@ The IO pin can be (and is on the project PCB) on a different port to the control
 	RTC_PORT		    assumes here that we send the clock to the RTC using the SPICLK
 	RTC_CE			chip select, active High
 	RTC_SCK
-	
+
 
 
 At power up, define RTC_CE and RTC_SCK as outputs, RTC_IO as an input, and set RTC_CE inactive (=low)
@@ -44,110 +44,110 @@ Uses _delay_us() function from <util/delay_basic.h> and <util/delay.h>
 
 
 
-static void rtc_clock_up_down(void) {
-	RTC_PORT |= (1<<RTC_SCK);
+static void rtc_clock_up_down(void)
+{
+	RTC_PORT |= (1 << RTC_SCK);
 	_delay_us(2);
-	RTC_PORT &= ~(1<<RTC_SCK);
+	RTC_PORT &= ~(1 << RTC_SCK);
 }
 
 
 
-void read_from_rtc(uint8_t command,uint8_t bytes,uint8_t* address_ptr) {
+void read_from_rtc(uint8_t command, uint8_t bytes, uint8_t *address_ptr)
+{
 
-// NB strange timing on SCK - 8 bits of command and 8 of read data in 15 clocks 
+	// NB strange timing on SCK - 8 bits of command and 8 of read data in 15 clocks
 
 	uint8_t result = 0;
 	uint8_t i;
 	uint8_t j;
 	uint8_t bitvalue;
 
-// need to revisit ----
-	RTC_DDR = (1<<RTC_SCK) | (1<<RTC_CE);	
+	// need to revisit ----
+	RTC_DDR = (1 << RTC_SCK) | (1 << RTC_CE);
 
-	RTC_PORT &= ~(1<<RTC_SCK);
-	RTC_IO_DDR |= 1<<RTC_IO;					// set io pin for output 
-	RTC_IO_PORT &= ~(1<<RTC_IO);				// io pin low 
-	RTC_PORT |= 1<<RTC_CE;					// set ce high 
+	RTC_PORT &= ~(1 << RTC_SCK);
+	RTC_IO_DDR |= 1 << RTC_IO;					// set io pin for output
+	RTC_IO_PORT &= ~(1 << RTC_IO);				// io pin low
+	RTC_PORT |= 1 << RTC_CE;					// set ce high
 	_delay_us(4);
 
-	// rtc uses least sig bit first 
-	// send the command 
-	for (i=0;i<8;i++) {
-		RTC_PORT &= ~(1<<RTC_SCK);
+	// rtc uses least sig bit first
+	// send the command
+	for (i = 0; i < 8; i++) {
+		RTC_PORT &= ~(1 << RTC_SCK);
 		bitvalue = ((command >> i) & 0x01);
-		if (bitvalue) {
-			RTC_IO_PORT |= 1<<RTC_IO;
-		} else {
-			RTC_IO_PORT &= ~(1<<RTC_IO);
-		}
+		if (bitvalue)
+			RTC_IO_PORT |= 1 << RTC_IO;
+		else
+			RTC_IO_PORT &= ~(1 << RTC_IO);
 		_delay_us(1);
-		RTC_PORT |= (1<<RTC_SCK);
+		RTC_PORT |= (1 << RTC_SCK);
 		_delay_us(1);
 	}
 
-	// exit loop with clock high 
+	// exit loop with clock high
 
-	RTC_IO_DDR &= ~(1<<RTC_IO);				// set io pin for input 
-	RTC_IO_PORT &= ~(1<<RTC_IO);				// and turn off pull up 
-	
-	for (j=0;j<bytes;j++) {
+	RTC_IO_DDR &= ~(1 << RTC_IO);				// set io pin for input
+	RTC_IO_PORT &= ~(1 << RTC_IO);				// and turn off pull up
+
+	for (j = 0; j < bytes; j++) {
 		result = 0;
-		for (i=0;i<8;i++) {
-			RTC_PORT |= (1<<RTC_SCK);
-		_delay_us(1);
-			RTC_PORT &= ~(1<<RTC_SCK);
-		_delay_us(1);
+		for (i = 0; i < 8; i++) {
+			RTC_PORT |= (1 << RTC_SCK);
+			_delay_us(1);
+			RTC_PORT &= ~(1 << RTC_SCK);
+			_delay_us(1);
 			bitvalue = ((RTC_IO_PIN >> RTC_IO) & 0x01);
 			result |= (bitvalue << i);
-		}	
+		}
 		address_ptr[j] = result;
-	}	
+	}
 
-	RTC_PORT &= ~(1<<RTC_CE);				// turn off ce 
-	RTC_IO_DDR |= 1<<RTC_IO;					// set io pin for output 
-	RTC_IO_PORT &= ~(1<<RTC_IO);				// io pin low 
+	RTC_PORT &= ~(1 << RTC_CE);				// turn off ce
+	RTC_IO_DDR |= 1 << RTC_IO;					// set io pin for output
+	RTC_IO_PORT &= ~(1 << RTC_IO);				// io pin low
 	_delay_us(4);
-	// io pin is an output on leaving 
+	// io pin is an output on leaving
 }
 
 
 
-void write_to_rtc(uint8_t command,uint8_t bytes,uint8_t* data_ptr) {
+void write_to_rtc(uint8_t command, uint8_t bytes, uint8_t *data_ptr)
+{
 
-// parameters:
-// bytes is number of bytes to be transferred 
+	// parameters:
+	// bytes is number of bytes to be transferred
 
 	uint8_t i;
 	uint8_t j;
 	uint8_t bitvalue;
 
-// need to revisit ----
-	RTC_DDR = (1<<RTC_SCK) | (1<<RTC_CE);	
+	// need to revisit ----
+	RTC_DDR = (1 << RTC_SCK) | (1 << RTC_CE);
 
-	RTC_PORT &= ~(1<<RTC_SCK);
-	RTC_IO_DDR |= 1<<RTC_IO;					// io pin output 
-	RTC_IO_PORT &= ~(1<<RTC_IO);				// set io low 
-	RTC_PORT |= 1<<RTC_CE;					// assert ce 
+	RTC_PORT &= ~(1 << RTC_SCK);
+	RTC_IO_DDR |= 1 << RTC_IO;					// io pin output
+	RTC_IO_PORT &= ~(1 << RTC_IO);				// set io low
+	RTC_PORT |= 1 << RTC_CE;					// assert ce
 	_delay_us(3);
 
-	for (i=0;i<8;++i) {
+	for (i = 0; i < 8; ++i) {
 		bitvalue = ((command >> i) & 0x01);
-		if (bitvalue) {
-			RTC_IO_PORT |= 1<<RTC_IO;
-		} else {
-			RTC_IO_PORT &= ~(1<<RTC_IO);
-		}
+		if (bitvalue)
+			RTC_IO_PORT |= 1 << RTC_IO;
+		else
+			RTC_IO_PORT &= ~(1 << RTC_IO);
 		_delay_us(1);
 		rtc_clock_up_down();
 	}
-	for (j=0;j<bytes;++j) {	
-		for (i=0;i<8;++i) {
+	for (j = 0; j < bytes; ++j) {
+		for (i = 0; i < 8; ++i) {
 			bitvalue = ((data_ptr[j] >> i) & 0x01);
-			if (bitvalue) {
-				RTC_IO_PORT |= 1<<RTC_IO;
-			} else {
-				RTC_IO_PORT &= ~(1<<RTC_IO);
-			}
+			if (bitvalue)
+				RTC_IO_PORT |= 1 << RTC_IO;
+			else
+				RTC_IO_PORT &= ~(1 << RTC_IO);
 			_delay_us(1);
 			rtc_clock_up_down();
 		}
@@ -155,50 +155,53 @@ void write_to_rtc(uint8_t command,uint8_t bytes,uint8_t* data_ptr) {
 
 	_delay_us(1);
 
-	RTC_PORT &= ~(1<<RTC_CE);				// deassert ce 
+	RTC_PORT &= ~(1 << RTC_CE);				// deassert ce
 	_delay_us(4);
 }
 
 
 
 
-void read_time(uint8_t* address_ptr) {
+void read_time(uint8_t *address_ptr)
+{
 
-	read_from_rtc(0xBF,7,address_ptr);
+	read_from_rtc(0xBF, 7, address_ptr);
 }
 
 
 
-void send_time_to_rtc(uint8_t* time_ptr) {
-// POINTER TO set of time data 
-// data format is:  ss mm hh date month day year 0
+void send_time_to_rtc(uint8_t *time_ptr)
+{
+	// POINTER TO set of time data
+	// data format is:  ss mm hh date month day year 0
 
 	uint8_t dummy_ptr = 0 ;
-	write_to_rtc(0x8E,1,&dummy_ptr);
-	write_to_rtc(0xBE,8,time_ptr);
+	write_to_rtc(0x8E, 1, &dummy_ptr);
+	write_to_rtc(0xBE, 8, time_ptr);
 
 }
 
 
 
-uint8_t bcd_to_hex(uint8_t bcd) {
-	
+uint8_t bcd_to_hex(uint8_t bcd)
+{
+
 	uint8_t msn = (bcd >> 4);
-	return ( (msn * 10) + (bcd & 0x0F) ) ;
+	return ((msn * 10) + (bcd & 0x0F)) ;
 }
 
 
 /*
 uint32_t get_fattime() {
-	
+
 	uint8_t time_store[8];
 
 	uint32_t fattime ;
 	uint16_t time ;
 	uint16_t date ;
-	
+
 	read_time(time_store);
-	time_store[0] &= 0x7F ;				// top bit is set on the seconds reading 	
+	time_store[0] &= 0x7F ;				// top bit is set on the seconds reading
 
 	time = bcd_to_hex(time_store[0]/2) ;
 	uint8_t min = bcd_to_hex(time_store[1]) ;
@@ -206,14 +209,14 @@ uint32_t get_fattime() {
 	date = bcd_to_hex(time_store[3]) ;
 	uint8_t month = bcd_to_hex(time_store[4]) ;
 	uint8_t year = bcd_to_hex(time_store[6])+20 ;
-	
+
 	time |= (min << 5) ;
 	time |= (hour << 11) ;
 	date |= (month << 5) ;
 	date |= (year << 9) ;
-	
+
 	fattime = time | ((uint32_t)date<<16);
-	
+
 	return fattime;
 }
 
@@ -231,7 +234,7 @@ void date_dirname(uint8_t *time_store,uint8_t *dirname) {
 
 
 void filename_from_date(uint8_t *time_store,uint8_t *filename) {
-	
+
 	filename[1] = hex2ascii_l(bcd_to_hex(time_store[4]));// month as horrible 0x01 to 0x0C value
 	filename[2] = (time_store[3] >> 4) + '0';			// 10s day
 	filename[3] = (time_store[3] & 0x0F) + '0';			// day
@@ -244,7 +247,8 @@ void filename_from_date(uint8_t *time_store,uint8_t *filename) {
 
 }
 */
-void iso_time(uint8_t *time_store,uint8_t *iso_time_store) {
+void iso_time(uint8_t *time_store, uint8_t *iso_time_store)
+{
 
 	iso_time_store[0] = '2';
 	iso_time_store[1] = '0';
@@ -261,7 +265,7 @@ void iso_time(uint8_t *time_store,uint8_t *iso_time_store) {
 	iso_time_store[12] = (time_store[1] & 0x0F) + '0';
 	iso_time_store[13] = (time_store[0] >> 4) + '0';
 	iso_time_store[14] = (time_store[0] & 0x0F) + '0';
-	iso_time_store[15] = 0;	
+	iso_time_store[15] = 0;
 }
 /*
 // Take a byte (hexval) and return the ASCII character for the highest 4 bits.

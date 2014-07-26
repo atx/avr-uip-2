@@ -66,20 +66,20 @@
 #endif
 
 struct webclient_state {
-  u8_t timer;
-  u8_t state;
-  u8_t httpflag;
+	u8_t timer;
+	u8_t state;
+	u8_t httpflag;
 
-  u16_t port;
-  char host[WEBCLIENT_CONF_MAX_HOST_LEN];
-  char file[WEBCLIENT_CONF_MAX_URLLEN];
-  u16_t getrequestptr;
-  u16_t getrequestleft;
-  
-  char httpheaderline[WEBCLIENT_CONF_MAX_HTTP_LEADER];
-  u16_t httpheaderlineptr;
+	u16_t port;
+	char host[WEBCLIENT_CONF_MAX_HOST_LEN];
+	char file[WEBCLIENT_CONF_MAX_URLLEN];
+	u16_t getrequestptr;
+	u16_t getrequestleft;
 
-  char mimetype[32];
+	char httpheaderline[WEBCLIENT_CONF_MAX_HTTP_LEADER];
+	u16_t httpheaderlineptr;
+
+	char mimetype[32];
 };
 
 
@@ -181,7 +181,8 @@ void webclient_init(void);
  * \retval 1 if the connection was initiated.
  */
 unsigned char webclient_get(const char *host, u16_t port, const char *file);
-unsigned char webclient_get_P(const prog_char *host, u16_t port, const prog_char *file);
+unsigned char webclient_get_P(const prog_char *host, u16_t port,
+                              const prog_char *file);
 
 /**
  * Close the currently open HTTP connection.
@@ -234,10 +235,10 @@ char *webclient_hostname(void);
 unsigned short webclient_port(void);
 
 #if defined PORT_APP_MAPPER
-    #define WEBCLIENT_APP_CALL_MAP {webclient_appcall, 0, 80},
+#define WEBCLIENT_APP_CALL_MAP {webclient_appcall, 0, 80},
 #else
-    #define WEBCLIENT_APP_CALL_MAP
-    typedef struct webclient_state uip_tcp_appstate_t;
+#define WEBCLIENT_APP_CALL_MAP
+typedef struct webclient_state uip_tcp_appstate_t;
 #endif
 
 #ifndef UIP_APPCALL

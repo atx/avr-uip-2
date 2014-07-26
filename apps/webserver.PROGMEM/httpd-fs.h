@@ -39,14 +39,14 @@
 
 // DEFINE THIS VIA MAKE FILE !!
 // SO THAT THE SCRIPT CAN SEE IT !!
-#ifdef ENABLE_CGI_FILE_STATS 
+#ifdef ENABLE_CGI_FILE_STATS
 #define HTTPD_FS_STATISTICS 1
 #endif
 // THE SCRIPT BEING makefsdata
 
 struct httpd_fs_file {
-  char *data;
-  int len;
+	char *data;
+	int len;
 };
 
 /* file must be allocated by caller and will be filled in

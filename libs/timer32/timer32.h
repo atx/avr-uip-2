@@ -72,8 +72,8 @@
  * \hideinitializer
  */
 struct timer32 {
-  clock_time32_t start;
-  clock_time32_t interval;
+	clock_time32_t start;
+	clock_time32_t interval;
 };
 
 void timer32_set(struct timer32 *t, clock_time_t interval);

@@ -2,7 +2,7 @@
 * vim:sw=8:ts=8:si:et
 *
 * Title      : Microchip ENC28J60 Ethernet Interface Driver
-* Author     : Pascal Stang 
+* Author     : Pascal Stang
 * Modified by: Guido Socher
 * Copyright: GPL V2
 *
@@ -219,11 +219,11 @@
 #define PHSTAT1_LLSTAT   0x0004
 #define PHSTAT1_JBSTAT   0x0002
 // ENC28J60 PHY PHSTAT2 Register Bit Definitions
-#define PHSTAT2_DPXSTAT  0x0200 
-#define PHSTAT2_LSTAT    0x0400 
-#define PHSTAT2_COLSTAT  0x0800 
-#define PHSTAT2_RXSTAT   0x1000 
-#define PHSTAT2_TXSTAT   0x2000 
+#define PHSTAT2_DPXSTAT  0x0200
+#define PHSTAT2_LSTAT    0x0400
+#define PHSTAT2_COLSTAT  0x0800
+#define PHSTAT2_RXSTAT   0x1000
+#define PHSTAT2_TXSTAT   0x2000
 
 
 // ENC28J60 PHY PHCON2 Register Bit Definitions
@@ -263,23 +263,23 @@
 //
 // max frame length which the conroller will accept:
 // (note: maximum ethernet frame length would be 1518)
-#define        MAX_FRAMELEN        1500        
+#define        MAX_FRAMELEN        1500
 
 
 // functions
 extern uint8_t enc28j60ReadOp(uint8_t op, uint8_t address);
 extern void enc28j60WriteOp(uint8_t op, uint8_t address, uint8_t data);
-extern void enc28j60ReadBuffer(uint16_t len, uint8_t* data);
-extern void enc28j60WriteBuffer(uint16_t len, uint8_t* data);
+extern void enc28j60ReadBuffer(uint16_t len, uint8_t *data);
+extern void enc28j60WriteBuffer(uint16_t len, uint8_t *data);
 extern void enc28j60SetBank(uint8_t address);
 extern uint8_t enc28j60Read(uint8_t address);
 extern void enc28j60Write(uint8_t address, uint8_t data);
 extern void enc28j60PhyWrite(uint8_t address, uint16_t data);
 extern void enc28j60clkout(uint8_t clk);
-extern void enc28j60Init(uint8_t* macaddr);
-extern void enc28j60PacketSend(uint16_t len, uint8_t* packet);
+extern void enc28j60Init(uint8_t *macaddr);
+extern void enc28j60PacketSend(uint16_t len, uint8_t *packet);
 extern uint8_t enc28j60hasRxPkt(void);
-extern uint16_t enc28j60PacketReceive(uint16_t maxlen, uint8_t* packet);
+extern uint16_t enc28j60PacketReceive(uint16_t maxlen, uint8_t *packet);
 extern uint8_t enc28j60getrev(void);
 extern uint8_t enc28j60linkup(void);
 

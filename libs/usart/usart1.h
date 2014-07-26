@@ -7,7 +7,7 @@
  *
  * \param baudval    Value to put in UBRR0 to selectbaud rate.
  *
- *             Initialise USART on newer microcontrollers which use the newer 
+ *             Initialise USART on newer microcontrollers which use the newer
  *				register and bit position names which include a USART number
  *
  *			   The baudval parameter will depend on the CPU clock frequency
@@ -27,14 +27,14 @@ void USART_init(uint16_t baudval);
  *
  * \param data    Pointer to start of string.
  *
- *             Transmit a string via the USART, using polling, not interrutps. 
+ *             Transmit a string via the USART, using polling, not interrutps.
  *				Doesn't change baud rate.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty
  *
  */
-void USART_transmit_string(const char* data);
+void USART_transmit_string(const char *data);
 //inline void USART_transmit_string(const unsigned char* data);
 
 // define a alias
@@ -45,12 +45,12 @@ void USART_transmit_string(const char* data);
  *
  * \param data    Character to transmit.
  *
- *             Transmit a character via the USART, using polling, not interrutps. 
+ *             Transmit a character via the USART, using polling, not interrutps.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty
  */
-void USART_transmit(unsigned char data );
+void USART_transmit(unsigned char data);
 
 /**
  * \brief      Receive an 8 bit value from the USART by polling.
@@ -60,7 +60,7 @@ void USART_transmit(unsigned char data );
  *			   Uses polling, so waits for receive buffer to fill before returning.
  *
  */
-uint8_t USART_receive( void );
+uint8_t USART_receive(void);
 
 
 
@@ -72,7 +72,7 @@ uint8_t USART_receive( void );
  *			   Note that in the event of continuous input, this function may never complete.
  *
  */
- void USART_flush(void);
+void USART_flush(void);
 
 
 #ifdef USART_EXTRA_SEND_FORMATS
@@ -81,11 +81,11 @@ uint8_t USART_receive( void );
  *
  * \param val    Character to transmit.
  *
- *             Transmit an 8 bit unsigned integer via the USART, as a series of up to 
+ *             Transmit an 8 bit unsigned integer via the USART, as a series of up to
  *				three decimal characters, using polling, not interrutps. Doesn't output
  *				leading zeroes, so number of characters transmitted may vary.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  */
 void USART_transmit_uint8(uint8_t val);
@@ -96,11 +96,11 @@ void USART_transmit_uint8(uint8_t val);
  *
  * \param val    Value to transmit.
  *
- *             Transmit an 8 bit signed integer via the USART, as an optional minus sign followed by 
- *				up to three decimal characters, using polling, not interrutps. 
+ *             Transmit an 8 bit signed integer via the USART, as an optional minus sign followed by
+ *				up to three decimal characters, using polling, not interrutps.
  *				Doesn't output leading zeroes, so number of characters transmitted may vary.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  *
  */
@@ -112,14 +112,14 @@ void USART_transmit_int8(int8_t val);
  *
  * \param val    Value to transmit.
  *
- *             Transmit a 16 bit unsigned integer via the USART, as a series of up to 
+ *             Transmit a 16 bit unsigned integer via the USART, as a series of up to
  *				five decimal characters, using polling, not interrutps. Doesn't output
  *				leading zeroes, so number of characters transmitted may vary.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  */
- void USART_transmit_uint16(uint16_t val);
+void USART_transmit_uint16(uint16_t val);
 
 
 /**
@@ -127,11 +127,11 @@ void USART_transmit_int8(int8_t val);
  *
  * \param val    value to transmit.
  *
- *             Transmit a 16 bit signed integer via the USART, as an optional minus sign followed by 
- *				up to five decimal characters, using polling, not interrutps. 
+ *             Transmit a 16 bit signed integer via the USART, as an optional minus sign followed by
+ *				up to five decimal characters, using polling, not interrutps.
  *				Doesn't output leading zeroes, so number of characters transmitted may vary.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  *
  */
@@ -145,7 +145,7 @@ void USART_transmit_int16(int16_t val);
  *
  *             Interpret an 8 bit unsigned integer as a BCD value and transmit it via the USART as exactly 2 characters.
  *				Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  *
  */
@@ -161,7 +161,7 @@ void USART_transmit_bcd(uint8_t val);
  *			   Transmit an 8 bit unsigned integer as eight ASCII characters 0 or 1.
  *
  *			   Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  *
  */
@@ -174,7 +174,7 @@ void USART_transmit_bin(uint8_t val);
  * \param nibble    Value to transmit.
  *
  *			   Doesn't interrupt any existing transmit already in progress.
- *				
+ *
  *			   Uses polling, so waits for transmit buffer to be empty before appending new characters
  *
  */
@@ -197,7 +197,7 @@ void USART_transmit_nibble(uint8_t nibble);
  *
  *
  */
- void usart_out_iso_time(uint8_t *time_store);
+void usart_out_iso_time(uint8_t *time_store);
 
 #endif // end - #ifdef USART_EXTRA_SEND_FORMATS
 

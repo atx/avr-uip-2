@@ -4,46 +4,45 @@
 #include <util/delay.h>
 
 unsigned int
-network_read(void) {
-    uint16_t len, totallen, i;
-    char dummy;
+network_read(void)
+{
+	uint16_t len, totallen, i;
+	char dummy;
 
-    len = ksz8851BeginPacketRetrieve();
-    totallen = len;
+	len = ksz8851BeginPacketRetrieve();
+	totallen = len;
 
-    if (len == 0) {
-        return 0;
-    }
+	if (len == 0)
+		return 0;
 
-    // Avoid SCADA attack - do not overflow
-    if (len > UIP_BUFSIZE) {
-        len = UIP_BUFSIZE;
-    }
+	// Avoid SCADA attack - do not overflow
+	if (len > UIP_BUFSIZE)
+		len = UIP_BUFSIZE;
 
-    ksz8851RetrievePacketData((uint8_t *)uip_buf, len);
+	ksz8851RetrievePacketData((uint8_t *)uip_buf, len);
 
-    // fetch reminder of the data to prevent stalling
-    for (i=len; i<totallen; i++) {
-        ksz8851RetrievePacketData((uint8_t *)&dummy, 1);
-    }
+	// fetch reminder of the data to prevent stalling
+	for (i = len; i < totallen; i++)
+		ksz8851RetrievePacketData((uint8_t *)&dummy, 1);
 
-    ksz8851EndPacketRetrieve();
+	ksz8851EndPacketRetrieve();
 
-    return len;
+	return len;
 }
 
 void
-network_send(void) {
-    ksz8851BeginPacketSend(uip_len);
+network_send(void)
+{
+	ksz8851BeginPacketSend(uip_len);
 
-    if (uip_len <= UIP_LLH_LEN + 40) {
-	ksz8851SendPacketData((uint8_t *)uip_buf, uip_len);
-    } else {
-	ksz8851SendPacketData((uint8_t *)uip_buf, 54);
-	ksz8851SendPacketData((uint8_t *)uip_appdata, uip_len - UIP_LLH_LEN - 40);
-    }
+	if (uip_len <= UIP_LLH_LEN + 40)
+		ksz8851SendPacketData((uint8_t *)uip_buf, uip_len);
+	else {
+		ksz8851SendPacketData((uint8_t *)uip_buf, 54);
+		ksz8851SendPacketData((uint8_t *)uip_appdata, uip_len - UIP_LLH_LEN - 40);
+	}
 
-    ksz8851EndPacketSend();
+	ksz8851EndPacketSend();
 }
 
 void
@@ -55,40 +54,40 @@ network_init(void)
 
 
 void
-network_get_MAC(uint8_t* macaddr)
+network_get_MAC(uint8_t *macaddr)
 {
-    uint16_t	temp;
+	uint16_t	temp;
 
-    // read MAC address registers
-    // NOTE: MAC address in KSZ8851 is byte-backward
+	// read MAC address registers
+	// NOTE: MAC address in KSZ8851 is byte-backward
 
-    /* Read QMU MAC address (low) */
-    temp = ksz8851_regrd(REG_MAC_ADDR_01);
-    macaddr[5] = temp & 0xff;
-    macaddr[4] = (temp >> 8);
+	/* Read QMU MAC address (low) */
+	temp = ksz8851_regrd(REG_MAC_ADDR_01);
+	macaddr[5] = temp & 0xff;
+	macaddr[4] = (temp >> 8);
 
-    /* Read QMU MAC address (middle) */
-    temp = ksz8851_regrd(REG_MAC_ADDR_23);
-    macaddr[3] = temp & 0xff;
-    macaddr[2] = temp >> 8;
+	/* Read QMU MAC address (middle) */
+	temp = ksz8851_regrd(REG_MAC_ADDR_23);
+	macaddr[3] = temp & 0xff;
+	macaddr[2] = temp >> 8;
 
-    /* Read QMU MAC address (high) */
-    temp = ksz8851_regrd(REG_MAC_ADDR_45);
-    macaddr[1] = temp & 0xff;
-    macaddr[0] = temp >>  8;
+	/* Read QMU MAC address (high) */
+	temp = ksz8851_regrd(REG_MAC_ADDR_45);
+	macaddr[1] = temp & 0xff;
+	macaddr[0] = temp >>  8;
 }
 
 void
-network_set_MAC(uint8_t* macaddr)
+network_set_MAC(uint8_t *macaddr)
 {
-    // write MAC address
-    // NOTE: MAC address in KSZ8851 is byte-backward
+	// write MAC address
+	// NOTE: MAC address in KSZ8851 is byte-backward
 
-    /* Write QMU MAC address (low) */
-    ksz8851_regwr(REG_MAC_ADDR_01, (macaddr[4] << 8) | macaddr[5]);
-    /* Write QMU MAC address (middle) */
-    ksz8851_regwr(REG_MAC_ADDR_23, (macaddr[2] << 8) | macaddr[3]);
-    /* Write QMU MAC address (high) */
-    ksz8851_regwr(REG_MAC_ADDR_45, (macaddr[0] << 8) | macaddr[1]);
+	/* Write QMU MAC address (low) */
+	ksz8851_regwr(REG_MAC_ADDR_01, (macaddr[4] << 8) | macaddr[5]);
+	/* Write QMU MAC address (middle) */
+	ksz8851_regwr(REG_MAC_ADDR_23, (macaddr[2] << 8) | macaddr[3]);
+	/* Write QMU MAC address (high) */
+	ksz8851_regwr(REG_MAC_ADDR_45, (macaddr[0] << 8) | macaddr[1]);
 }
 

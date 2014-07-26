@@ -39,18 +39,18 @@
 #include "httpd-fs.h"
 
 struct httpd_state {
-  unsigned char timer;
-  struct psock sin, sout;
-  struct pt outputpt, scriptpt;
-  char inputbuf[50];
-  char filename[20];
-  char state;
-  struct httpd_fs_file file;
-  int len;
-  char *scriptptr;
-  int scriptlen;
-  
-  unsigned short count;
+	unsigned char timer;
+	struct psock sin, sout;
+	struct pt outputpt, scriptpt;
+	char inputbuf[50];
+	char filename[20];
+	char state;
+	struct httpd_fs_file file;
+	int len;
+	char *scriptptr;
+	int scriptlen;
+
+	unsigned short count;
 };
 
 void httpd_init(void);
@@ -60,11 +60,11 @@ void httpd_log(char *msg);
 void httpd_log_file(u16_t *requester, char *file);
 
 #if defined PORT_APP_MAPPER
-	#define WEBSERVER_APP_CALL_MAP {httpd_appcall, 80, 0},
-	struct httpd_state httpd_state_list[UIP_CONF_MAX_CONNECTIONS];
+#define WEBSERVER_APP_CALL_MAP {httpd_appcall, 80, 0},
+struct httpd_state httpd_state_list[UIP_CONF_MAX_CONNECTIONS];
 #else
-	#define WEBSERVER_APP_CALL_MAP
-	typedef struct httpd_state uip_tcp_appstate_t;
+#define WEBSERVER_APP_CALL_MAP
+typedef struct httpd_state uip_tcp_appstate_t;
 #endif
 
 #endif /* __HTTPD_H__ */

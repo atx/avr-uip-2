@@ -49,21 +49,21 @@ void telnetd_init(void);
 #endif
 
 struct telnetd_state {
-  char *lines[TELNETD_CONF_NUMLINES];
-  char buf[TELNETD_CONF_LINELEN];
-  char bufptr;
-  u8_t numsent;
-  u8_t state;
+	char *lines[TELNETD_CONF_NUMLINES];
+	char buf[TELNETD_CONF_LINELEN];
+	char bufptr;
+	u8_t numsent;
+	u8_t state;
 };
 
 
 #if defined PORT_APP_MAPPER
-	#define TELNET_APP_CALL_MAP {telnetd_appcall, 23, 0},
-	struct telnetd_state telnetd_state_list[UIP_CONF_MAX_CONNECTIONS];
+#define TELNET_APP_CALL_MAP {telnetd_appcall, 23, 0},
+struct telnetd_state telnetd_state_list[UIP_CONF_MAX_CONNECTIONS];
 #else
-	#define TELNET_APP_CALL_MAP
-	#define UIP_APPCALL     telnetd_appcall
-	typedef struct telnetd_state uip_tcp_appstate_t;
+#define TELNET_APP_CALL_MAP
+#define UIP_APPCALL     telnetd_appcall
+typedef struct telnetd_state uip_tcp_appstate_t;
 #endif
 
 #endif /* __TELNETD_H__ */

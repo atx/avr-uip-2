@@ -80,17 +80,17 @@
 
 /*---------------------------------------------------------------------------*/
 static unsigned short
-generate_part_of_file(void *state) {
-    struct httpd_state *s = (struct httpd_state *) state;
+generate_part_of_file(void *state)
+{
+	struct httpd_state *s = (struct httpd_state *) state;
 
-    if (s->file.len > uip_mss()) {
-        s->len = uip_mss();
-    } else {
-        s->len = s->file.len;
-    }
-    memcpy_P(uip_appdata, s->file.data, s->len);
+	if (s->file.len > uip_mss())
+		s->len = uip_mss();
+	else
+		s->len = s->file.len;
+	memcpy_P(uip_appdata, s->file.data, s->len);
 
-    return s->len;
+	return s->len;
 }
 /*
 static unsigned short
@@ -143,268 +143,278 @@ generate_script_part_of_file(void *state) {
 */
 /*---------------------------------------------------------------------------*/
 static
-PT_THREAD(send_file(struct httpd_state *s)) {
-    PSOCK_BEGIN(&s->sout);
+PT_THREAD(send_file(struct httpd_state *s))
+{
+	PSOCK_BEGIN(&s->sout);
 
-    do {
-        if (s->script)
-            PSOCK_GENERATOR_SEND(&s->sout, generate_part_of_file, s);
-        else
-            PSOCK_GENERATOR_SEND(&s->sout, generate_part_of_file, s);
-        s->file.len -= s->len;
-        s->file.data += s->len;
-    } while (s->file.len > 0);
+	do {
+		if (s->script)
+			PSOCK_GENERATOR_SEND(&s->sout, generate_part_of_file, s);
+		else
+			PSOCK_GENERATOR_SEND(&s->sout, generate_part_of_file, s);
+		s->file.len -= s->len;
+		s->file.data += s->len;
+	} while (s->file.len > 0);
 
-    PSOCK_END(&s->sout);
+	PSOCK_END(&s->sout);
 }
 
 /*---------------------------------------------------------------------------*/
 static
-PT_THREAD(send_part_of_file(struct httpd_state *s)) {
-    PSOCK_BEGIN(&s->sout);
+PT_THREAD(send_part_of_file(struct httpd_state *s))
+{
+	PSOCK_BEGIN(&s->sout);
 
-    PSOCK_SEND(&s->sout, s->file.data, s->len);
+	PSOCK_SEND(&s->sout, s->file.data, s->len);
 
-    PSOCK_END(&s->sout);
+	PSOCK_END(&s->sout);
 }
 
 static
-PT_THREAD(send_headers(struct httpd_state *s, const char *statushdr)) {
-    char *ptr;
+PT_THREAD(send_headers(struct httpd_state *s, const char *statushdr))
+{
+	char *ptr;
 
-    PSOCK_BEGIN(&s->sout);
+	PSOCK_BEGIN(&s->sout);
 
-    PSOCK_SEND_STR(&s->sout, statushdr);
+	PSOCK_SEND_STR(&s->sout, statushdr);
 
-    ptr = strrchr(s->filename, ISO_period);
-    if (ptr == NULL) {
-        s->script = false;
-        PSOCK_SEND_STR(&s->sout, http_content_type_binary);
-    } else if (strncmp(http_htm, ptr, 4) == 0 || strncmp(http_shtml, ptr, 6) == 0) {
-        s->script = true;
-        PSOCK_SEND_STR(&s->sout, http_content_type_html);
-    } else if (strncmp(http_css, ptr, 4) == 0) {
-        s->script = false;
-        PSOCK_SEND_STR(&s->sout, http_content_type_css);
-    } else if (strncmp(http_png, ptr, 4) == 0) {
-        s->script = false;
-        PSOCK_SEND_STR(&s->sout, http_content_type_png);
-    } else if (strncmp(http_gif, ptr, 4) == 0) {
-        s->script = false;
-        PSOCK_SEND_STR(&s->sout, http_content_type_gif);
-    } else if (strncmp(http_jpg, ptr, 4) == 0) {
-        s->script = false;
-        PSOCK_SEND_STR(&s->sout, http_content_type_jpg);
-    } else {
-        s->script = true;
-        PSOCK_SEND_STR(&s->sout, http_content_type_plain);
-    }
-    PSOCK_END(&s->sout);
+	ptr = strrchr(s->filename, ISO_period);
+	if (ptr == NULL) {
+		s->script = false;
+		PSOCK_SEND_STR(&s->sout, http_content_type_binary);
+	} else if (strncmp(http_htm, ptr, 4) == 0 || strncmp(http_shtml, ptr, 6) == 0) {
+		s->script = true;
+		PSOCK_SEND_STR(&s->sout, http_content_type_html);
+	} else if (strncmp(http_css, ptr, 4) == 0) {
+		s->script = false;
+		PSOCK_SEND_STR(&s->sout, http_content_type_css);
+	} else if (strncmp(http_png, ptr, 4) == 0) {
+		s->script = false;
+		PSOCK_SEND_STR(&s->sout, http_content_type_png);
+	} else if (strncmp(http_gif, ptr, 4) == 0) {
+		s->script = false;
+		PSOCK_SEND_STR(&s->sout, http_content_type_gif);
+	} else if (strncmp(http_jpg, ptr, 4) == 0) {
+		s->script = false;
+		PSOCK_SEND_STR(&s->sout, http_content_type_jpg);
+	} else {
+		s->script = true;
+		PSOCK_SEND_STR(&s->sout, http_content_type_plain);
+	}
+	PSOCK_END(&s->sout);
 }
 
 
 static
-PT_THREAD(send_sensor_list(struct httpd_state *s)) {
-    static uint16_t i;
-    PSOCK_BEGIN(&s->sout);
+PT_THREAD(send_sensor_list(struct httpd_state *s))
+{
+	static uint16_t i;
+	PSOCK_BEGIN(&s->sout);
 
-        //script output
-        bool first = true;
-        PSOCK_SEND_STR(&s->sout, "var sensors=[");
+	//script output
+	bool first = true;
+	PSOCK_SEND_STR(&s->sout, "var sensors=[");
 
-        for (i=0; i < MAXSENSORS; i++) {
-            if (sensorValues[(i * SENSORSIZE) + FAMILY] != 0) {
-                if (!first)
-                    PSOCK_SEND_STR(&s->sout, ",");
-                else
-                    first = false;
+	for (i = 0; i < MAXSENSORS; i++) {
+		if (sensorValues[(i * SENSORSIZE) + FAMILY] != 0) {
+			if (!first)
+				PSOCK_SEND_STR(&s->sout, ",");
+			else
+				first = false;
 
-                int frac = sensorValues[(i * SENSORSIZE) + VALUE2] * DS18X20_FRACCONV; //Ganger de sidste par bits, med det step DS18B20 bruger
+			int frac = sensorValues[(i * SENSORSIZE) + VALUE2] *
+			           DS18X20_FRACCONV; //Ganger de sidste par bits, med det step DS18B20 bruger
 
-                sprintf_P(tempbuf, PSTR("[%u, '%02X%02X%02X%02X%02X%02X%02X%02X', '%c%d.%04d']"), i,
-                        sensorValues[(i * SENSORSIZE) + FAMILY],
-                        sensorValues[(i * SENSORSIZE) + ID1],
-                        sensorValues[(i * SENSORSIZE) + ID2],
-                        sensorValues[(i * SENSORSIZE) + ID3],
-                        sensorValues[(i * SENSORSIZE) + ID4],
-                        sensorValues[(i * SENSORSIZE) + ID5],
-                        sensorValues[(i * SENSORSIZE) + ID6],
-                        sensorValues[(i * SENSORSIZE) + CRC],
-                        sensorValues[(i * SENSORSIZE) + SIGN],
-                        sensorValues[(i * SENSORSIZE) + VALUE1],
-                        frac
-                        );
+			sprintf_P(tempbuf,
+			          PSTR("[%u, '%02X%02X%02X%02X%02X%02X%02X%02X', '%c%d.%04d']"), i,
+			          sensorValues[(i * SENSORSIZE) + FAMILY],
+			          sensorValues[(i * SENSORSIZE) + ID1],
+			          sensorValues[(i * SENSORSIZE) + ID2],
+			          sensorValues[(i * SENSORSIZE) + ID3],
+			          sensorValues[(i * SENSORSIZE) + ID4],
+			          sensorValues[(i * SENSORSIZE) + ID5],
+			          sensorValues[(i * SENSORSIZE) + ID6],
+			          sensorValues[(i * SENSORSIZE) + CRC],
+			          sensorValues[(i * SENSORSIZE) + SIGN],
+			          sensorValues[(i * SENSORSIZE) + VALUE1],
+			          frac
+			         );
 
-                PSOCK_SEND_STR(&s->sout, tempbuf);
-            }
-        }
+			PSOCK_SEND_STR(&s->sout, tempbuf);
+		}
+	}
 
-        PSOCK_SEND_STR(&s->sout, "];");
+	PSOCK_SEND_STR(&s->sout, "];");
 
-    PSOCK_END(&s->sout);
+	PSOCK_END(&s->sout);
 }
 
 static
-PT_THREAD(send_ajax_list(struct httpd_state *s)) {
-    static uint16_t i;
-    PSOCK_BEGIN(&s->sout);
+PT_THREAD(send_ajax_list(struct httpd_state *s))
+{
+	static uint16_t i;
+	PSOCK_BEGIN(&s->sout);
 
-        //script output
-        PSOCK_SEND_STR(&s->sout, "1-wire<br>");
+	//script output
+	PSOCK_SEND_STR(&s->sout, "1-wire<br>");
 
-        for (i=0; i < MAXSENSORS; i++) {
-            if (sensorValues[(i * SENSORSIZE) + FAMILY] != 0) {
-                int frac = sensorValues[(i * SENSORSIZE) + VALUE2] * DS18X20_FRACCONV; //Ganger de sidste par bits, med det step DS18B20 bruger
+	for (i = 0; i < MAXSENSORS; i++) {
+		if (sensorValues[(i * SENSORSIZE) + FAMILY] != 0) {
+			int frac = sensorValues[(i * SENSORSIZE) + VALUE2] *
+			           DS18X20_FRACCONV; //Ganger de sidste par bits, med det step DS18B20 bruger
 
-                sprintf_P(tempbuf, PSTR("%02X%02X%02X%02X%02X%02X%02X%02X: %c%d.%04d<br>"),
-                        sensorValues[(i * SENSORSIZE) + FAMILY],
-                        sensorValues[(i * SENSORSIZE) + ID1],
-                        sensorValues[(i * SENSORSIZE) + ID2],
-                        sensorValues[(i * SENSORSIZE) + ID3],
-                        sensorValues[(i * SENSORSIZE) + ID4],
-                        sensorValues[(i * SENSORSIZE) + ID5],
-                        sensorValues[(i * SENSORSIZE) + ID6],
-                        sensorValues[(i * SENSORSIZE) + CRC],
-                        sensorValues[(i * SENSORSIZE) + SIGN],
-                        sensorValues[(i * SENSORSIZE) + VALUE1],
-                        frac
-                        );
+			sprintf_P(tempbuf, PSTR("%02X%02X%02X%02X%02X%02X%02X%02X: %c%d.%04d<br>"),
+			          sensorValues[(i * SENSORSIZE) + FAMILY],
+			          sensorValues[(i * SENSORSIZE) + ID1],
+			          sensorValues[(i * SENSORSIZE) + ID2],
+			          sensorValues[(i * SENSORSIZE) + ID3],
+			          sensorValues[(i * SENSORSIZE) + ID4],
+			          sensorValues[(i * SENSORSIZE) + ID5],
+			          sensorValues[(i * SENSORSIZE) + ID6],
+			          sensorValues[(i * SENSORSIZE) + CRC],
+			          sensorValues[(i * SENSORSIZE) + SIGN],
+			          sensorValues[(i * SENSORSIZE) + VALUE1],
+			          frac
+			         );
 
-                PSOCK_SEND_STR(&s->sout, tempbuf);
-            }
-        }
+			PSOCK_SEND_STR(&s->sout, tempbuf);
+		}
+	}
 
-        PSOCK_SEND_STR(&s->sout, "<br>");
+	PSOCK_SEND_STR(&s->sout, "<br>");
 
-    PSOCK_END(&s->sout);
+	PSOCK_END(&s->sout);
 }
 
 static
-PT_THREAD(send_var_list(struct httpd_state *s)) {
-    PSOCK_BEGIN(&s->sout);
+PT_THREAD(send_var_list(struct httpd_state *s))
+{
+	PSOCK_BEGIN(&s->sout);
 
-    //script output
-    sprintf(tempbuf, "var FIRM_MAJOR=%u;\r\nvar FIRM_MINOR=%u;\r\n", SBNG_VERSION_MAJOR,SBNG_VERSION_MINOR);
-    PSOCK_SEND_STR(&s->sout, tempbuf);
-    sprintf(tempbuf, "var SYSID='%02X%02X%02X%02X%02X%02X%02X%02X';\r\n", systemID[0], systemID[1], systemID[2], systemID[3], systemID[4], systemID[5], systemID[6], systemID[7]);
-    PSOCK_SEND_STR(&s->sout, tempbuf);
+	//script output
+	sprintf(tempbuf, "var FIRM_MAJOR=%u;\r\nvar FIRM_MINOR=%u;\r\n",
+	        SBNG_VERSION_MAJOR, SBNG_VERSION_MINOR);
+	PSOCK_SEND_STR(&s->sout, tempbuf);
+	sprintf(tempbuf, "var SYSID='%02X%02X%02X%02X%02X%02X%02X%02X';\r\n",
+	        systemID[0], systemID[1], systemID[2], systemID[3], systemID[4], systemID[5],
+	        systemID[6], systemID[7]);
+	PSOCK_SEND_STR(&s->sout, tempbuf);
 
-    PSOCK_END(&s->sout);
-}
-
-/*---------------------------------------------------------------------------*/
-static
-PT_THREAD(handle_output(struct httpd_state *s)) {
-    PT_BEGIN(&s->outputpt);
-
-    if (strncmp(s->filename, "/slist.js",9) == 0) {
-        PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
-        PT_WAIT_THREAD(&s->outputpt, send_sensor_list(s));
-    } else if (strncmp(s->filename, "/ajax_slist.htm",15) == 0) {
-        PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
-        PT_WAIT_THREAD(&s->outputpt, send_ajax_list(s));
-    } else if (strncmp(s->filename, "/var.js",7) == 0) {
-        PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
-        PT_WAIT_THREAD(&s->outputpt, send_var_list(s));
-    } else {
-        if (!httpd_fs_open(s->filename, &s->file)) {
-            httpd_fs_open(http_404_html, &s->file);
-            strcpy(s->filename, http_404_html);
-            PT_WAIT_THREAD(&s->outputpt,
-                    send_headers(s,
-                    http_header_404));
-            
-            PT_WAIT_THREAD(&s->outputpt,
-                    send_file(s));
-        } else {
-            PT_WAIT_THREAD(&s->outputpt,
-                    send_headers(s,
-                    http_header_200));
-
-            PT_WAIT_THREAD(&s->outputpt,
-                    send_file(s));
-        }
-    }
-    PSOCK_CLOSE(&s->sout);
-    PT_END(&s->outputpt);
+	PSOCK_END(&s->sout);
 }
 
 /*---------------------------------------------------------------------------*/
 static
-PT_THREAD(handle_input(struct httpd_state *s)) {
-    PSOCK_BEGIN(&s->sin);
+PT_THREAD(handle_output(struct httpd_state *s))
+{
+	PT_BEGIN(&s->outputpt);
 
-    PSOCK_READTO(&s->sin, ISO_space);
+	if (strncmp(s->filename, "/slist.js", 9) == 0) {
+		PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
+		PT_WAIT_THREAD(&s->outputpt, send_sensor_list(s));
+	} else if (strncmp(s->filename, "/ajax_slist.htm", 15) == 0) {
+		PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
+		PT_WAIT_THREAD(&s->outputpt, send_ajax_list(s));
+	} else if (strncmp(s->filename, "/var.js", 7) == 0) {
+		PT_WAIT_THREAD(&s->outputpt, send_headers(s, http_header_200));
+		PT_WAIT_THREAD(&s->outputpt, send_var_list(s));
+	} else {
+		if (!httpd_fs_open(s->filename, &s->file)) {
+			httpd_fs_open(http_404_html, &s->file);
+			strcpy(s->filename, http_404_html);
+			PT_WAIT_THREAD(&s->outputpt,
+			               send_headers(s,
+			                            http_header_404));
+
+			PT_WAIT_THREAD(&s->outputpt,
+			               send_file(s));
+		} else {
+			PT_WAIT_THREAD(&s->outputpt,
+			               send_headers(s,
+			                            http_header_200));
+
+			PT_WAIT_THREAD(&s->outputpt,
+			               send_file(s));
+		}
+	}
+	PSOCK_CLOSE(&s->sout);
+	PT_END(&s->outputpt);
+}
+
+/*---------------------------------------------------------------------------*/
+static
+PT_THREAD(handle_input(struct httpd_state *s))
+{
+	PSOCK_BEGIN(&s->sin);
+
+	PSOCK_READTO(&s->sin, ISO_space);
 
 
-    if (strncmp(s->inputbuf, http_get, 4) != 0) {
-        PSOCK_CLOSE_EXIT(&s->sin);
-    }
-    PSOCK_READTO(&s->sin, ISO_space);
+	if (strncmp(s->inputbuf, http_get, 4) != 0)
+		PSOCK_CLOSE_EXIT(&s->sin);
+	PSOCK_READTO(&s->sin, ISO_space);
 
-    if (s->inputbuf[0] != ISO_slash) {
-        PSOCK_CLOSE_EXIT(&s->sin);
-    }
+	if (s->inputbuf[0] != ISO_slash)
+		PSOCK_CLOSE_EXIT(&s->sin);
 
-    if (s->inputbuf[1] == ISO_space) {
-        strncpy(s->filename, http_index_html, sizeof (s->filename));
-    } else {
-        s->inputbuf[PSOCK_DATALEN(&s->sin) - 1] = 0;
-        strncpy(s->filename, &s->inputbuf[0], sizeof (s->filename));
-    }
+	if (s->inputbuf[1] == ISO_space)
+		strncpy(s->filename, http_index_html, sizeof(s->filename));
+	else {
+		s->inputbuf[PSOCK_DATALEN(&s->sin) - 1] = 0;
+		strncpy(s->filename, &s->inputbuf[0], sizeof(s->filename));
+	}
 
-    /*  httpd_log_file(uip_conn->ripaddr, s->filename);*/
+	/*  httpd_log_file(uip_conn->ripaddr, s->filename);*/
 
-    s->state = STATE_OUTPUT;
+	s->state = STATE_OUTPUT;
 
-    while (1) {
-        PSOCK_READTO(&s->sin, ISO_nl);
+	while (1) {
+		PSOCK_READTO(&s->sin, ISO_nl);
 
-        if (strncmp(s->inputbuf, http_referer, 8) == 0) {
-            s->inputbuf[PSOCK_DATALEN(&s->sin) - 2] = 0;
-            /*      httpd_log(&s->inputbuf[9]);*/
-        }
-    }
+		if (strncmp(s->inputbuf, http_referer, 8) == 0) {
+			s->inputbuf[PSOCK_DATALEN(&s->sin) - 2] = 0;
+			/*      httpd_log(&s->inputbuf[9]);*/
+		}
+	}
 
-    PSOCK_END(&s->sin);
+	PSOCK_END(&s->sin);
 }
 
 /*---------------------------------------------------------------------------*/
 static void
-handle_connection(struct httpd_state *s) {
-    handle_input(s);
-    if (s->state == STATE_OUTPUT) {
-        handle_output(s);
-    }
+handle_connection(struct httpd_state *s)
+{
+	handle_input(s);
+	if (s->state == STATE_OUTPUT)
+		handle_output(s);
 }
 
 /*---------------------------------------------------------------------------*/
 void
-httpd_appcall(void) {
-    struct httpd_state *s = (struct httpd_state *) &(uip_conn->appstate);
+httpd_appcall(void)
+{
+	struct httpd_state *s = (struct httpd_state *) & (uip_conn->appstate);
 
-    if (uip_closed() || uip_aborted() || uip_timedout()) {
-    } else if (uip_connected()) {
-        PSOCK_INIT(&s->sin, s->inputbuf, sizeof (s->inputbuf) - 1);
-        PSOCK_INIT(&s->sout, s->inputbuf, sizeof (s->inputbuf) - 1);
-        PT_INIT(&s->outputpt);
-        s->state = STATE_WAITING;
-        /*    timer_set(&s->timer, CLOCK_SECOND * 100);*/
-        s->timer = 0;
-        handle_connection(s);
-    } else if (s != NULL) {
-        if (uip_poll()) {
-            ++s->timer;
-            if (s->timer >= 20) {
-                uip_abort();
-            }
-        } else {
-            s->timer = 0;
-        }
-        handle_connection(s);
-    } else {
-        uip_abort();
-    }
+	if (uip_closed() || uip_aborted() || uip_timedout()) {
+	} else if (uip_connected()) {
+		PSOCK_INIT(&s->sin, s->inputbuf, sizeof(s->inputbuf) - 1);
+		PSOCK_INIT(&s->sout, s->inputbuf, sizeof(s->inputbuf) - 1);
+		PT_INIT(&s->outputpt);
+		s->state = STATE_WAITING;
+		/*    timer_set(&s->timer, CLOCK_SECOND * 100);*/
+		s->timer = 0;
+		handle_connection(s);
+	} else if (s != NULL) {
+		if (uip_poll()) {
+			++s->timer;
+			if (s->timer >= 20)
+				uip_abort();
+		} else
+			s->timer = 0;
+		handle_connection(s);
+	} else
+		uip_abort();
 }
 /*---------------------------------------------------------------------------*/
 
@@ -415,8 +425,9 @@ httpd_appcall(void) {
  *             called at system boot-up.
  */
 void
-httpd_init(void) {
-    uip_listen(HTONS(80));
+httpd_init(void)
+{
+	uip_listen(HTONS(80));
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

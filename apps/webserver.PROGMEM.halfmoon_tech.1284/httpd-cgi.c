@@ -86,12 +86,12 @@ HTTPD_CGI_CALL(hello, "hello", run_hello);
 #endif
 
 #if defined ENABLE_CGI_GET_SET_VALUE
-static char getsetvalue_str_g[20] = {0,0};
+static char getsetvalue_str_g[20] = {0, 0};
 #include "cgi-code/get_set_value.c"
 HTTPD_CGI_CALL(getsetvalue_get, "get_set_value", getsetvalue_out);
 HTTPD_CGI_CALL(getsetvalue_set, "getset_p.shtml", getsetvalue_in);
 #else
-#define ENABLE_CGI_GET_SET_VALUE_LIST 
+#define ENABLE_CGI_GET_SET_VALUE_LIST
 #endif
 
 #if defined ENABLE_CGI_TCP_CONNECTIONS
@@ -101,43 +101,43 @@ HTTPD_CGI_CALL(tcp_connections, "tcp_connections", tcp_stats);
 #define ENABLE_CGI_TCP_CONNECTIONS
 #endif
 
-static const struct httpd_cgi_call *calls[] = { 
-ENABLE_CGI_FILE_STATS_LIST
-ENABLE_CGI_NET_STATS_LIST
-ENABLE_CGI_MYCGI_LIST
-ENABLE_CGI_HELLO_LIST
-ENABLE_CGI_GET_SET_VALUE_LIST
-ENABLE_CGI_TCP_CONNECTIONS_LIST
-    NULL };
+static const struct httpd_cgi_call *calls[] = {
+	ENABLE_CGI_FILE_STATS_LIST
+	ENABLE_CGI_NET_STATS_LIST
+	ENABLE_CGI_MYCGI_LIST
+	ENABLE_CGI_HELLO_LIST
+	ENABLE_CGI_GET_SET_VALUE_LIST
+	ENABLE_CGI_TCP_CONNECTIONS_LIST
+	NULL
+};
 
 /*---------------------------------------------------------------------------*/
 static
 PT_THREAD(nullfunction(struct httpd_state *s, char *ptr))
 {
-  PSOCK_BEGIN(&s->sout);
-  PSOCK_END(&s->sout);
+	PSOCK_BEGIN(&s->sout);
+	PSOCK_END(&s->sout);
 }
 /*---------------------------------------------------------------------------*/
 
 httpd_cgifunction
 httpd_cgi_lookup(const char *name, const struct httpd_cgi_call **searchlist)
 {
-  const struct httpd_cgi_call **f;
+	const struct httpd_cgi_call **f;
 
-  /* Find the matching name in the table, return the function. */
-  for(f = searchlist; *f != NULL; ++f) {
-    if((strlen((*f)->name) > 2) &&
-	    (strncmp((*f)->name, name, strlen((*f)->name)) == 0)) {
-      return (*f)->function;
-    }
-  }
-  return nullfunction;
+	/* Find the matching name in the table, return the function. */
+	for (f = searchlist; *f != NULL; ++f) {
+		if ((strlen((*f)->name) > 2) &&
+		    (strncmp((*f)->name, name, strlen((*f)->name)) == 0))
+			return (*f)->function;
+	}
+	return nullfunction;
 }
 
 httpd_cgifunction
 httpd_cgi(const char *name)
 {
-  return(httpd_cgi_lookup(name,calls));
+	return (httpd_cgi_lookup(name, calls));
 }
 
 

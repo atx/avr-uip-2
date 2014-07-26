@@ -48,29 +48,29 @@ int net_conf_init(void);
 void net_conf_uip_set(void);
 uint8_t network_string_to_byte_array(char *net_string,
                                      uint8_t byte_array[],
-									 uint8_t byte_array_len);
-uint8_t *net_conf_get_ip (void);
-void net_conf_set_ip (uint8_t *new_ip);
+                                     uint8_t byte_array_len);
+uint8_t *net_conf_get_ip(void);
+void net_conf_set_ip(uint8_t *new_ip);
 void net_conf_set_ip_ipaddr(const uip_ipaddr_t addr);
-int8_t net_conf_get_ip_string (char* ip_string, int8_t ip_string_len);
-uint8_t net_conf_set_ip_string (char *ip_string);
+int8_t net_conf_get_ip_string(char *ip_string, int8_t ip_string_len);
+uint8_t net_conf_set_ip_string(char *ip_string);
 
-uint8_t *net_conf_get_gw (void);
-void net_conf_set_gw (uint8_t* new_gw);
+uint8_t *net_conf_get_gw(void);
+void net_conf_set_gw(uint8_t *new_gw);
 void net_conf_set_gw_ipaddr(const uip_ipaddr_t addr);
-int8_t net_conf_get_gw_string (char* gw_string, int8_t gw_string_len);
-uint8_t net_conf_set_gw_string (char* gw_string);
+int8_t net_conf_get_gw_string(char *gw_string, int8_t gw_string_len);
+uint8_t net_conf_set_gw_string(char *gw_string);
 
-uint8_t *net_conf_get_nm (void);
-void net_conf_set_nm (uint8_t *new_nm);
+uint8_t *net_conf_get_nm(void);
+void net_conf_set_nm(uint8_t *new_nm);
 void net_conf_set_nm_ipaddr(const uip_ipaddr_t addr);
-int8_t net_conf_get_nm_string (char* nm_string, int8_t nm_string_len);
-uint8_t net_conf_set_nm_string (char *nm_string);
+int8_t net_conf_get_nm_string(char *nm_string, int8_t nm_string_len);
+uint8_t net_conf_set_nm_string(char *nm_string);
 
-uint8_t *net_conf_get_mac (void);
-void net_conf_set_mac (uint8_t *new_eth_addr);
-int8_t net_conf_get_mac_string (char* mac_string, int8_t mac_string_len);
-uint8_t net_conf_set_mac_string (char *mac_string);
+uint8_t *net_conf_get_mac(void);
+void net_conf_set_mac(uint8_t *new_eth_addr);
+int8_t net_conf_get_mac_string(char *mac_string, int8_t mac_string_len);
+uint8_t net_conf_set_mac_string(char *mac_string);
 
 void net_conf_set_dhcpc(uint8_t mode);
 uint8_t net_conf_set_dhcpc_string(char *mode);

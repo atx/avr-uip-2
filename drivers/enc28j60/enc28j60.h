@@ -261,9 +261,9 @@ u08 enc28j60ReadOp(u08 op, u08 address);
 //! do a ENC28J60 write operation
 void enc28j60WriteOp(u08 op, u08 address, u08 data);
 //! read the packet buffer memory
-void enc28j60ReadBuffer(u16 len, u08* data);
+void enc28j60ReadBuffer(u16 len, u08 *data);
 //! write the packet buffer memory
-void enc28j60WriteBuffer(u16 len, u08* data);
+void enc28j60WriteBuffer(u16 len, u08 *data);
 //! set the register bank for register at address
 void enc28j60SetBank(u08 address);
 //! read ax88796 register
@@ -284,7 +284,8 @@ void enc28j60Init(void);
 /// \param packet	Pointer to packet data.
 /// \param len2		Length of the secound packet in bytes, can be 0.
 /// \param packet2	Pointer to the secound packet data, can be NULL.
-void enc28j60PacketSend(unsigned int len1, unsigned char* packet1, unsigned int len2, unsigned char* packet2);
+void enc28j60PacketSend(unsigned int len1, unsigned char *packet1,
+                        unsigned int len2, unsigned char *packet2);
 
 //! Packet receive function.
 /// Gets a packet from the network receive buffer, if one is available.
@@ -292,7 +293,7 @@ void enc28j60PacketSend(unsigned int len1, unsigned char* packet1, unsigned int 
 /// \param	maxlen	The maximum acceptable length of a retrieved packet.
 /// \param	packet	Pointer where packet data should be stored.
 /// \return Packet length in bytes if a packet was retrieved, zero otherwise.
-unsigned int enc28j60PacketReceive(unsigned int maxlen, unsigned char* packet);
+unsigned int enc28j60PacketReceive(unsigned int maxlen, unsigned char *packet);
 
 //! execute procedure for recovering from a receive overflow
 /// this should be done when the receive memory fills up with packets

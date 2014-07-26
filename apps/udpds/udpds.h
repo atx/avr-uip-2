@@ -32,7 +32,7 @@
 
 typedef int uip_udp_appstate_t;
 void udpds_appcall(void);
-#define UIP_UDP_APPCALL udpds_appcall 
+#define UIP_UDP_APPCALL udpds_appcall
 
 #include "uipopt.h"
 

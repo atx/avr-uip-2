@@ -55,13 +55,13 @@
 
 
 #if defined(__AVR_ATmega644__)||defined(__AVR_ATmega644P__)||defined(__AVR_ATmega1284P__)
-  #define ENC28J60_SPI_SCK        PORTB7
-  #define ENC28J60_SPI_MOSI       PORTB5
-  #define ENC28J60_SPI_MISO       PORTB6
-  #define ENC28J60_SPI_SS         PORTB4
-  #define ENC28J60_CONTROL_CS      PORTB4
+#define ENC28J60_SPI_SCK        PORTB7
+#define ENC28J60_SPI_MOSI       PORTB5
+#define ENC28J60_SPI_MISO       PORTB6
+#define ENC28J60_SPI_SS         PORTB4
+#define ENC28J60_CONTROL_CS      PORTB4
 #else
-  #error "NIC SPI PORT PINS NOT DEFINED"
+#error "NIC SPI PORT PINS NOT DEFINED"
 #endif
 
 // ENC28J60 control port
