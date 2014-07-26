@@ -251,26 +251,26 @@
 #define ETHERNET_MIN_PACKET_LENGTH	0x3C
 
 //! do a ENC28J60 read operation
-u08 enc28j60ReadOp(u08 op, u08 address);
+u08 enc28j60_op_read(u08 op, u08 address);
 //! do a ENC28J60 write operation
-void enc28j60WriteOp(u08 op, u08 address, u08 data);
+void enc28j60_op_write(u08 op, u08 address, u08 data);
 //! read the packet buffer memory
-void enc28j60ReadBuffer(u16 len, u08 *data);
+void enc28j60_buffer_read(u16 len, u08 *data);
 //! write the packet buffer memory
-void enc28j60WriteBuffer(u16 len, u08 *data);
+void enc28j60_buffer_write(u16 len, u08 *data);
 //! set the register bank for register at address
-void enc28j60SetBank(u08 address);
+void enc28j60_bank_set(u08 address);
 //! read ax88796 register
-u08 enc28j60Read(u08 address);
+u08 enc28j60_read(u08 address);
 //! write ax88796 register
-void enc28j60Write(u08 address, u08 data);
+void enc28j60_write(u08 address, u08 data);
 //! read a PHY register
-u16 enc28j60PhyRead(u08 address);
+u16 enc28j60_phy_read(u08 address);
 //! write a PHY register
-void enc28j60PhyWrite(u08 address, u16 data);
+void enc28j60_phy_write(u08 address, u16 data);
 
 //! initialize the ethernet interface for transmit/receive
-void enc28j60Init(void);
+void enc28j60_init(void);
 
 //! Packet transmit function.
 /// Sends a packet on the network.  It is assumed that the packet is headed by a valid ethernet header.
@@ -278,7 +278,7 @@ void enc28j60Init(void);
 /// \param packet	Pointer to packet data.
 /// \param len2		Length of the secound packet in bytes, can be 0.
 /// \param packet2	Pointer to the secound packet data, can be NULL.
-void enc28j60PacketSend(unsigned int len1, unsigned char *packet1,
+void enc28j60_packet_send(unsigned int len1, unsigned char *packet1,
                         unsigned int len2, unsigned char *packet2);
 
 //! Packet receive function.
@@ -287,7 +287,7 @@ void enc28j60PacketSend(unsigned int len1, unsigned char *packet1,
 /// \param	maxlen	The maximum acceptable length of a retrieved packet.
 /// \param	packet	Pointer where packet data should be stored.
 /// \return Packet length in bytes if a packet was retrieved, zero otherwise.
-unsigned int enc28j60PacketReceive(unsigned int maxlen, unsigned char *packet);
+unsigned int enc28j60_packet_receive(unsigned int maxlen, unsigned char *packet);
 
 #endif
 //@}
