@@ -28,8 +28,6 @@
 
 #include "global.h"
 
-//#define nop()	asm volatile ("nop")
-
 // ENC28J60 Control Registers
 // Control register definitions are a combination of address,
 // bank number, and Ethernet/MAC/PHY indicator bits.
@@ -251,10 +249,6 @@
 
 // Ethernet constants
 #define ETHERNET_MIN_PACKET_LENGTH	0x3C
-//#define ETHERNET_HEADER_LENGTH		0x0E
-
-// setup ports for I/O
-//void ax88796SetupPorts(void);
 
 //! do a ENC28J60 read operation
 u08 enc28j60ReadOp(u08 op, u08 address);
@@ -294,10 +288,6 @@ void enc28j60PacketSend(unsigned int len1, unsigned char *packet1,
 /// \param	packet	Pointer where packet data should be stored.
 /// \return Packet length in bytes if a packet was retrieved, zero otherwise.
 unsigned int enc28j60PacketReceive(unsigned int maxlen, unsigned char *packet);
-
-//! execute procedure for recovering from a receive overflow
-/// this should be done when the receive memory fills up with packets
-void enc28j60ReceiveOverflowRecover(void);
 
 #endif
 //@}
