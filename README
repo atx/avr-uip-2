@@ -1,13 +1,10 @@
-uIP is a very small implementation of the TCP/IP stack that is written
-by Adam Dunkels <adam@sics.se>. More information can be obtained 
-at the uIP homepage at http://www.sics.se/~adam/uip/.
+## avr-uip^2
 
-This is version $Name: uip-1-0 $.
+This repository contains my fork of avr-uip (https://code.google.com/p/avr-uip/)
 
-The directory structure look as follows:
+Based on:
 
-apps/     - Example applications
-doc/      - Documentation
-libs/     - Library code used by some applications and dirvers
-uip/      - uIP TCP/IP stack code
-drivers/  - Drivers for various hardware
+uIP stack - Adam Dunkels (www.dunkels.com/adam/uip)
+ENC28J60  - Pascal Stang
+KSZ8851   - Ag Primatic, bug fixes by Andrus Aaslaid
+avr-uip   - https://code.google.com/p/avr-uip/
