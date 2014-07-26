@@ -24,9 +24,6 @@
 
 #include "enc28j60.h"
 
-// include configuration
-#include "enc28j60conf.h"
-
 static u08 enc28j60_bank;
 static u16 enc28j60_packet_ptr;
 
@@ -241,12 +238,12 @@ void enc28j60_init(void)
 	// do bank 3 stuff
 	// write MAC address
 	// NOTE: MAC address in ENC28J60 is byte-backward
-	enc28j60_write(MAADR5, ENC28J60_MAC0);
-	enc28j60_write(MAADR4, ENC28J60_MAC1);
-	enc28j60_write(MAADR3, ENC28J60_MAC2);
-	enc28j60_write(MAADR2, ENC28J60_MAC3);
-	enc28j60_write(MAADR1, ENC28J60_MAC4);
-	enc28j60_write(MAADR0, ENC28J60_MAC5);
+	enc28j60_write(MAADR5, ETHADDR0);
+	enc28j60_write(MAADR4, ETHADDR1);
+	enc28j60_write(MAADR3, ETHADDR2);
+	enc28j60_write(MAADR2, ETHADDR3);
+	enc28j60_write(MAADR1, ETHADDR4);
+	enc28j60_write(MAADR0, ETHADDR5);
 
 	// no loopback of transmitted frames
 	enc28j60_phy_write(PHCON2, PHCON2_HDLDIS);
