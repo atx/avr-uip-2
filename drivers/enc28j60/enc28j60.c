@@ -24,6 +24,12 @@
 
 #include "enc28j60.h"
 
+#define enc28j60_assert_cs() \
+	ENC28J60_CONTROL_PORT &= ~(1 << ENC28J60_CONTROL_CS);
+
+#define enc28j60_release_cs() \
+	ENC28J60_CONTROL_PORT |= (1 << ENC28J60_CONTROL_CS);
+
 static u08 enc28j60_bank;
 static u16 enc28j60_packet_ptr;
 
@@ -31,8 +37,7 @@ u08 enc28j60_op_read(u08 op, u08 address)
 {
 	u08 data;
 
-	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1 << ENC28J60_CONTROL_CS);
+	enc28j60_assert_cs();
 
 	// issue read command
 	SPDR = op | (address & ADDR_MASK);
@@ -47,16 +52,14 @@ u08 enc28j60_op_read(u08 op, u08 address)
 	}
 	data = SPDR;
 
-	// release CS
-	ENC28J60_CONTROL_PORT |= (1 << ENC28J60_CONTROL_CS);
+	enc28j60_release_cs();
 
 	return data;
 }
 
 void enc28j60_op_write(u08 op, u08 address, u08 data)
 {
-	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1 << ENC28J60_CONTROL_CS);
+	enc28j60_assert_cs();
 
 	// issue write command
 	SPDR = op | (address & ADDR_MASK);
@@ -65,14 +68,12 @@ void enc28j60_op_write(u08 op, u08 address, u08 data)
 	SPDR = data;
 	while (!(SPSR & (1 << SPIF)));
 
-	// release CS
-	ENC28J60_CONTROL_PORT |= (1 << ENC28J60_CONTROL_CS);
+	enc28j60_release_cs();
 }
 
 void enc28j60_buffer_read(u16 len, u08 *data)
 {
-	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1 << ENC28J60_CONTROL_CS);
+	enc28j60_assert_cs();
 
 	// issue read command
 	SPDR = ENC28J60_READ_BUF_MEM;
@@ -83,14 +84,13 @@ void enc28j60_buffer_read(u16 len, u08 *data)
 		while (!(SPSR & (1 << SPIF)));
 		*data++ = SPDR;
 	}
-	// release CS
-	ENC28J60_CONTROL_PORT |= (1 << ENC28J60_CONTROL_CS);
+
+	enc28j60_release_cs();
 }
 
 void enc28j60_buffer_write(u16 len, u08 *data)
 {
-	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1 << ENC28J60_CONTROL_CS);
+	enc28j60_assert_cs();
 
 	// issue write command
 	SPDR = ENC28J60_WRITE_BUF_MEM;
@@ -100,8 +100,8 @@ void enc28j60_buffer_write(u16 len, u08 *data)
 		SPDR = *data++;
 		while (!(SPSR & (1 << SPIF)));
 	}
-	// release CS
-	ENC28J60_CONTROL_PORT |= (1 << ENC28J60_CONTROL_CS);
+
+	enc28j60_release_cs();
 }
 
 void enc28j60_bank_set(u08 address)
