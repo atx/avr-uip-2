@@ -78,7 +78,7 @@ static uip_ipaddr_t smtpserver;
 #define ISO_5  0x35
 
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(smtp_thread(void))
 {
@@ -185,7 +185,7 @@ PT_THREAD(smtp_thread(void))
 	smtp_done(SMTP_ERR_OK);
 	PSOCK_END(&s.psock);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 smtp_appcall(void)
 {
@@ -200,7 +200,7 @@ smtp_appcall(void)
 	}
 	smtp_thread();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Specificy an SMTP server and hostname.
  *
@@ -218,7 +218,7 @@ smtp_configure(char *lhostname, void *server)
 	localhostname = lhostname;
 	uip_ipaddr_copy(smtpserver, server);
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Send an e-mail.
  *
@@ -250,12 +250,12 @@ smtp_send(char *to, char *cc, char *from,
 
 	return 1;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 smtp_init(void)
 {
 	s.connected = 0;
 }
-/*---------------------------------------------------------------------------*/
+
 /** @} */
 /** @} */

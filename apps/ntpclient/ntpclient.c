@@ -82,7 +82,7 @@ struct ntp_msg {
 	uint32_t transmit_timestamp[2];
 };
 
-/*---------------------------------------------------------------------------*/
+
 const uint8_t DayOfMonth[] = { 31, 29, 31, 30, 31, 30,
                                31, 31, 30, 31, 30, 31
                              };
@@ -130,7 +130,7 @@ ntp_dst(struct ntp_tm *tm)
 	tm->day = day;
 	tm->weekday = weekday;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntp_tmtime(uint32_t sec, struct ntp_tm *tm)
 {
@@ -179,7 +179,7 @@ ntp_tmtime(uint32_t sec, struct ntp_tm *tm)
 	tm->month = month;				// 1..12
 	tm->day = day + 1;				// 1..31
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 send_request(void)
 {
@@ -214,7 +214,7 @@ send_request(void)
 	// and finally send request
 	uip_send(uip_appdata, sizeof(struct ntp_msg));
 }
-/*---------------------------------------------------------------------------*/
+
 static uint8_t
 parse_msg(struct ntp_time *time)
 {
@@ -230,7 +230,7 @@ parse_msg(struct ntp_time *time)
 
 	return 1;
 }
-/*---------------------------------------------------------------------------*/
+
 /* shift time value right one bit (divide by two) */
 void
 ntp_time_shr(struct ntp_time *a)
@@ -239,7 +239,7 @@ ntp_time_shr(struct ntp_time *a)
 	if (a->seconds & 1) a->fraction |= 0x8000;
 	a->seconds >>= 1;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntp_time_diff(struct ntp_time *a, struct ntp_time *b, struct ntp_time *diff)
 {
@@ -250,7 +250,7 @@ ntp_time_diff(struct ntp_time *a, struct ntp_time *b, struct ntp_time *diff)
 	if (diff->fraction > a->fraction)
 		diff->seconds -= 1;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntp_time_add(struct ntp_time *a, struct ntp_time *diff)
 {
@@ -263,7 +263,7 @@ ntp_time_add(struct ntp_time *a, struct ntp_time *diff)
 	if (a->fraction < tmp_frac)
 		a->seconds += 1;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntp_time_multiply(struct ntp_time *time, ntp_adjust_t adjust)
 {
@@ -288,7 +288,7 @@ ntp_time_multiply(struct ntp_time *time, ntp_adjust_t adjust)
 		time->seconds |= 0xffff0000;
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 ntp_adjust_t
 ntp_time_divide(struct ntp_time *dividend, struct ntp_time *divisor)
 {
@@ -389,7 +389,7 @@ ntp_time_divide(struct ntp_time *dividend, struct ntp_time *divisor)
 
 	return n * quotient.fraction;
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntp_get_adjusted(struct ntp_time *time)
 {
@@ -410,7 +410,7 @@ ntp_get_adjusted(struct ntp_time *time)
 	/* and add it to current hw time */
 	ntp_time_add(time, &diff);
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_ntp(void))
 {
@@ -612,7 +612,7 @@ PT_THREAD(handle_ntp(void))
 	PT_END(&ntpc_s.pt);
 }
 
-/*---------------------------------------------------------------------------*/
+
 void
 ntpclient_init(void)
 {
@@ -627,13 +627,13 @@ ntpclient_init(void)
 		uip_udp_bind(ntpc_s.conn, HTONS(NTP_PORT));
 	PT_INIT(&ntpc_s.pt);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 ntpclient_appcall(void)
 {
 	handle_ntp();
 }
-/*---------------------------------------------------------------------------*/
+
 
 void clock_get_ntptime(struct ntp_time *time)
 {

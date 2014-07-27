@@ -48,7 +48,7 @@
 #include "clock.h"
 #include "timer.h"
 
-/*---------------------------------------------------------------------------*/
+
 /**
  * Set a timer.
  *
@@ -66,7 +66,7 @@ timer_set(struct timer *t, clock_time_t interval)
 	t->interval = interval;
 	t->start = clock_time();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Reset the timer with the same interval.
  *
@@ -85,7 +85,7 @@ timer_reset(struct timer *t)
 {
 	t->start += t->interval;
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Restart the timer from the current point in time
  *
@@ -105,7 +105,7 @@ timer_restart(struct timer *t)
 {
 	t->start = clock_time();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Check if a timer has expired.
  *
@@ -122,6 +122,6 @@ timer_expired(struct timer *t)
 {
 	return (clock_time_t)(clock_time() - t->start) >= (clock_time_t)t->interval;
 }
-/*---------------------------------------------------------------------------*/
+
 
 /** @} */

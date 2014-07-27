@@ -38,7 +38,7 @@
 #include "uiplib.h"
 
 
-/*-----------------------------------------------------------------------------------*/
+
 unsigned char
 uiplib_ipaddrconv(char *addrstr, unsigned char *ipaddr)
 {
@@ -68,5 +68,3 @@ uiplib_ipaddrconv(char *addrstr, unsigned char *ipaddr)
 	}
 	return 1;
 }
-
-/*-----------------------------------------------------------------------------------*/

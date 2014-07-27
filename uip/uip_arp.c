@@ -115,19 +115,19 @@ static u8_t tmpage;
 
 #define BUF   ((struct arp_hdr *)&uip_buf[0])
 #define IPBUF ((struct ethip_hdr *)&uip_buf[0])
-/*-----------------------------------------------------------------------------------*/
+
 /**
  * Initialize the ARP module.
  *
  */
-/*-----------------------------------------------------------------------------------*/
+
 void
 uip_arp_init(void)
 {
 	for (i = 0; i < UIP_ARPTAB_SIZE; ++i)
 		memset(arp_table[i].ipaddr, 0, 4);
 }
-/*-----------------------------------------------------------------------------------*/
+
 /**
  * Periodic ARP processing function.
  *
@@ -136,7 +136,7 @@ uip_arp_init(void)
  * is 10 seconds between the calls.
  *
  */
-/*-----------------------------------------------------------------------------------*/
+
 void
 uip_arp_timer(void)
 {
@@ -151,7 +151,7 @@ uip_arp_timer(void)
 	}
 
 }
-/*-----------------------------------------------------------------------------------*/
+
 static void
 uip_arp_update(u16_t *ipaddr, struct uip_eth_addr *ethaddr)
 {
@@ -213,7 +213,7 @@ uip_arp_update(u16_t *ipaddr, struct uip_eth_addr *ethaddr)
 	memcpy(tabptr->ethaddr.addr, ethaddr->addr, 6);
 	tabptr->time = arptime;
 }
-/*-----------------------------------------------------------------------------------*/
+
 /**
  * ARP processing for incoming IP packets
  *
@@ -226,7 +226,7 @@ uip_arp_update(u16_t *ipaddr, struct uip_eth_addr *ethaddr)
  * in the uip_buf[] buffer, and the length of the packet in the global
  * variable uip_len.
  */
-/*-----------------------------------------------------------------------------------*/
+
 //#if 0
 void uip_arp_ipin(void)
 {
@@ -245,7 +245,7 @@ void uip_arp_ipin(void)
 	return;
 }
 //#endif /* 0 */
-/*-----------------------------------------------------------------------------------*/
+
 /**
  * ARP processing for incoming ARP packets.
  *
@@ -267,7 +267,7 @@ void uip_arp_ipin(void)
  * header in the uip_buf[] buffer, and the length of the packet in the
  * global variable uip_len.
  */
-/*-----------------------------------------------------------------------------------*/
+
 //#if 0
 void
 uip_arp_arpin(void)
@@ -317,7 +317,7 @@ uip_arp_arpin(void)
 	return;
 }
 //#endif
-/*-----------------------------------------------------------------------------------*/
+
 /**
  * Prepend Ethernet header to an outbound IP packet and see if we need
  * to send out an ARP request.
@@ -344,7 +344,7 @@ uip_arp_arpin(void)
  * buffer, and the length of the packet is in the global variable
  * uip_len.
  */
-/*-----------------------------------------------------------------------------------*/
+
 void
 uip_arp_out(void)
 {
@@ -411,7 +411,7 @@ uip_arp_out(void)
 
 	uip_len += sizeof(struct uip_eth_hdr);
 }
-/*-----------------------------------------------------------------------------------*/
+
 
 /** @} */
 /** @} */

@@ -47,14 +47,14 @@
 
 #include "memb.h"
 
-/*---------------------------------------------------------------------------*/
+
 void
 memb_init(struct memb_blocks *m)
 {
 	memset(m->count, 0, m->num);
 	memset(m->mem, 0, m->size * m->num);
 }
-/*---------------------------------------------------------------------------*/
+
 void *
 memb_alloc(struct memb_blocks *m)
 {
@@ -74,7 +74,7 @@ memb_alloc(struct memb_blocks *m)
 	   allocate block. */
 	return NULL;
 }
-/*---------------------------------------------------------------------------*/
+
 char
 memb_free(struct memb_blocks *m, void *ptr)
 {
@@ -99,6 +99,6 @@ memb_free(struct memb_blocks *m, void *ptr)
 	}
 	return -1;
 }
-/*---------------------------------------------------------------------------*/
+
 
 /** @} */

@@ -111,14 +111,14 @@ static const struct httpd_cgi_call *calls[] = {
 	NULL
 };
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(nullfunction(struct httpd_state *s, char *ptr))
 {
 	PSOCK_BEGIN(&s->sout);
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 
 httpd_cgifunction
 httpd_cgi_lookup(const char *name, const struct httpd_cgi_call **searchlist)

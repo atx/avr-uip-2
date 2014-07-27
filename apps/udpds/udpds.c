@@ -45,11 +45,11 @@ static struct timer udpds_interval_timer;
 uint8_t udpds_enable_state = 1;
 
 
-/*---------------------------------------------------------------------------*/
+
 /** \internal
  * The main UDP function.
  */
-/*---------------------------------------------------------------------------*/
+
 void
 udpds_appcall(void)
 {
@@ -61,7 +61,7 @@ udpds_appcall(void)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void udpds_conf(u16_t *to_ip, u16_t to_port, u8_t interval)
 {
 	if (udpds_conn != NULL)

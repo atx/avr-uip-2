@@ -78,7 +78,7 @@
 #define ISO_slash   0x2f
 #define ISO_colon   0x3a
 
-/*---------------------------------------------------------------------------*/
+
 static unsigned short
 generate_part_of_file(void *state)
 {
@@ -141,7 +141,7 @@ generate_script_part_of_file(void *state) {
     return s->len;
 }
 */
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(send_file(struct httpd_state *s))
 {
@@ -159,7 +159,7 @@ PT_THREAD(send_file(struct httpd_state *s))
 	PSOCK_END(&s->sout);
 }
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(send_part_of_file(struct httpd_state *s))
 {
@@ -304,7 +304,7 @@ PT_THREAD(send_var_list(struct httpd_state *s))
 	PSOCK_END(&s->sout);
 }
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_output(struct httpd_state *s))
 {
@@ -342,7 +342,7 @@ PT_THREAD(handle_output(struct httpd_state *s))
 	PT_END(&s->outputpt);
 }
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_input(struct httpd_state *s))
 {
@@ -381,7 +381,7 @@ PT_THREAD(handle_input(struct httpd_state *s))
 	PSOCK_END(&s->sin);
 }
 
-/*---------------------------------------------------------------------------*/
+
 static void
 handle_connection(struct httpd_state *s)
 {
@@ -390,7 +390,7 @@ handle_connection(struct httpd_state *s)
 		handle_output(s);
 }
 
-/*---------------------------------------------------------------------------*/
+
 void
 httpd_appcall(void)
 {
@@ -416,7 +416,7 @@ httpd_appcall(void)
 	} else
 		uip_abort();
 }
-/*---------------------------------------------------------------------------*/
+
 
 /**
  * \brief      Initialize the web server
@@ -429,5 +429,5 @@ httpd_init(void)
 {
 	uip_listen(HTONS(80));
 }
-/*---------------------------------------------------------------------------*/
+
 /** @} */

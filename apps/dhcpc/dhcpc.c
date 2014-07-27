@@ -108,7 +108,7 @@ static uint8_t msg_type;
 
 static const u8_t xid[4] = {0xad, 0xde, 0x12, 0x23};
 static const u8_t magic_cookie[4] = {99, 130, 83, 99};
-/*---------------------------------------------------------------------------*/
+
 static u8_t *
 add_msg_type(u8_t *optptr, u8_t type)
 {
@@ -117,7 +117,7 @@ add_msg_type(u8_t *optptr, u8_t type)
 	*optptr++ = type;
 	return optptr;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t *
 add_server_id(u8_t *optptr)
 {
@@ -126,7 +126,7 @@ add_server_id(u8_t *optptr)
 	memcpy(optptr, s.serverid, 4);
 	return optptr + 4;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t *
 add_req_ipaddr(u8_t *optptr)
 {
@@ -135,7 +135,7 @@ add_req_ipaddr(u8_t *optptr)
 	memcpy(optptr, s.ipaddr, 4);
 	return optptr + 4;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t *
 add_req_options(u8_t *optptr)
 {
@@ -146,14 +146,14 @@ add_req_options(u8_t *optptr)
 	*optptr++ = DHCP_OPTION_DNS_SERVER;
 	return optptr;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t *
 add_end(u8_t *optptr)
 {
 	*optptr++ = DHCP_OPTION_END;
 	return optptr;
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 create_msg(register struct dhcp_msg *m)
 {
@@ -178,7 +178,7 @@ create_msg(register struct dhcp_msg *m)
 
 	memcpy(m->options, magic_cookie, sizeof(magic_cookie));
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 send_discover(void)
 {
@@ -193,7 +193,7 @@ send_discover(void)
 
 	uip_send(uip_appdata, end - (u8_t *)uip_appdata);
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 send_request(void)
 {
@@ -209,7 +209,7 @@ send_request(void)
 
 	uip_send(uip_appdata, end - (u8_t *)uip_appdata);
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t
 parse_options(u8_t *optptr, uint16_t len)
 {
@@ -249,7 +249,7 @@ parse_options(u8_t *optptr, uint16_t len)
 	}
 	return type;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t parse_msg(void)
 {
 	struct dhcp_msg *m = (struct dhcp_msg *)uip_appdata;
@@ -262,7 +262,7 @@ static u8_t parse_msg(void)
 	}
 	return 0;
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_dhcp(void))
 {
@@ -374,7 +374,7 @@ close_and_clean_up:
 	//sendString("\r\ndhcpc handle dhcp passed: END");
 	PT_END(&s.pt);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 dhcpc_init(const void *mac_addr, uint8_t mac_len)
 {
@@ -390,7 +390,7 @@ dhcpc_init(const void *mac_addr, uint8_t mac_len)
 		uip_udp_bind(s.conn, HTONS(DHCPC_CLIENT_PORT));
 	PT_INIT(&s.pt);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 dhcpc_appcall(void)
 {
@@ -401,7 +401,7 @@ dhcpc_appcall(void)
 		(void) handle_dhcp();
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void
 dhcpc_request(void)
 {
@@ -418,7 +418,7 @@ dhcpc_request(void)
 		//handle_dhcp();
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 
 void
 dhcpc_renew(void)

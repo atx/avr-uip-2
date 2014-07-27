@@ -75,7 +75,7 @@
 #define ISO_colon   0x3a
 
 
-/*---------------------------------------------------------------------------*/
+
 static unsigned short
 generate_part_of_file(void *state)
 {
@@ -89,7 +89,7 @@ generate_part_of_file(void *state)
 
 	return s->len;
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(send_file(struct httpd_state *s))
 {
@@ -103,7 +103,7 @@ PT_THREAD(send_file(struct httpd_state *s))
 
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(send_part_of_file(struct httpd_state *s))
 {
@@ -113,7 +113,7 @@ PT_THREAD(send_part_of_file(struct httpd_state *s))
 
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 next_scriptstate(struct httpd_state *s)
 {
@@ -122,7 +122,7 @@ next_scriptstate(struct httpd_state *s)
 	s->scriptlen -= (unsigned short)(p - s->scriptptr);
 	s->scriptptr = p;
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_script(struct httpd_state *s))
 {
@@ -179,7 +179,7 @@ PT_THREAD(handle_script(struct httpd_state *s))
 
 	PT_END(&s->scriptpt);
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(send_headers(struct httpd_state *s, const char *statushdr))
 {
@@ -207,7 +207,7 @@ PT_THREAD(send_headers(struct httpd_state *s, const char *statushdr))
 		PSOCK_SEND_STR(&s->sout, http_content_type_plain);
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_output(struct httpd_state *s))
 {
@@ -239,7 +239,7 @@ PT_THREAD(handle_output(struct httpd_state *s))
 	PSOCK_CLOSE(&s->sout);
 	PT_END(&s->outputpt);
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(handle_input(struct httpd_state *s))
 {
@@ -277,7 +277,7 @@ PT_THREAD(handle_input(struct httpd_state *s))
 
 	PSOCK_END(&s->sin);
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 handle_connection(struct httpd_state *s)
 {
@@ -285,7 +285,7 @@ handle_connection(struct httpd_state *s)
 	if (s->state == STATE_OUTPUT)
 		handle_output(s);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 httpd_appcall(void)
 {
@@ -311,7 +311,7 @@ httpd_appcall(void)
 	} else
 		uip_abort();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * \brief      Initialize the web server
  *
@@ -323,5 +323,5 @@ httpd_init(void)
 {
 	uip_listen(HTONS(80));
 }
-/*---------------------------------------------------------------------------*/
+
 /** @} */

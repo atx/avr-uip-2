@@ -47,7 +47,7 @@
 static u16_t count[HTTPD_FS_NUMFILES];
 #endif /* HTTPD_FS_STATISTICS */
 
-/*-----------------------------------------------------------------------------------*/
+
 static u8_t
 httpd_fs_strcmp(const char *str1, const char *str2)
 {
@@ -67,7 +67,7 @@ loop:
 	++i;
 	goto loop;
 }
-/*-----------------------------------------------------------------------------------*/
+
 int
 httpd_fs_open(const char *name, struct httpd_fs_file *file)
 {
@@ -95,7 +95,7 @@ httpd_fs_open(const char *name, struct httpd_fs_file *file)
 	}
 	return 0;
 }
-/*-----------------------------------------------------------------------------------*/
+
 void
 httpd_fs_init(void)
 {
@@ -105,7 +105,7 @@ httpd_fs_init(void)
 		count[i] = 0;
 #endif /* HTTPD_FS_STATISTICS */
 }
-/*-----------------------------------------------------------------------------------*/
+
 #if HTTPD_FS_STATISTICS
 u16_t httpd_fs_count
 (char *name)
@@ -125,4 +125,4 @@ u16_t httpd_fs_count
 	return 0;
 }
 #endif /* HTTPD_FS_STATISTICS */
-/*-----------------------------------------------------------------------------------*/
+

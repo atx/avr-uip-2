@@ -62,25 +62,25 @@ static struct telnetd_state s;
 #define TELNET_WONT  252
 #define TELNET_DO    253
 #define TELNET_DONT  254
-/*---------------------------------------------------------------------------*/
+
 static char *
 alloc_line(void)
 {
 	return memb_alloc(&linemem);
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 dealloc_line(char *line)
 {
 	memb_free(&linemem, line);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_quit(char *str)
 {
 	s.state = STATE_CLOSE;
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 sendline(char *line)
 {
@@ -95,7 +95,7 @@ sendline(char *line)
 	if (i == TELNETD_CONF_NUMLINES)
 		dealloc_line(line);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_prompt(char *str)
 {
@@ -107,7 +107,7 @@ shell_prompt(char *str)
 		sendline(line);
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_output(char *str1, char *str2)
 {
@@ -130,7 +130,7 @@ shell_output(char *str1, char *str2)
 		sendline(line);
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_output_P(PGM_P str1, PGM_P str2)
 {
@@ -153,7 +153,7 @@ shell_output_P(PGM_P str1, PGM_P str2)
 		sendline(line);
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void
 telnetd_init(void)
 {
@@ -161,7 +161,7 @@ telnetd_init(void)
 	memb_init(&linemem);
 	shell_init();
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 acked(void)
 {
@@ -175,7 +175,7 @@ acked(void)
 		--s.numsent;
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 senddata(void)
 {
@@ -199,7 +199,7 @@ senddata(void)
 	}
 	uip_send(uip_appdata, buflen);
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 closed(void)
 {
@@ -210,7 +210,7 @@ closed(void)
 			dealloc_line(s.lines[i]);
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 get_char(u8_t c)
 {
@@ -231,7 +231,7 @@ get_char(u8_t c)
 	} else
 		++s.bufptr;
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 sendopt(u8_t option, u8_t value)
 {
@@ -245,7 +245,7 @@ sendopt(u8_t option, u8_t value)
 		sendline(line);
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 newdata(void)
 {
@@ -319,7 +319,7 @@ newdata(void)
 	}
 
 }
-/*---------------------------------------------------------------------------*/
+
 void
 telnetd_appcall(void)
 {
@@ -358,4 +358,4 @@ telnetd_appcall(void)
 	    uip_poll())
 		senddata();
 }
-/*---------------------------------------------------------------------------*/
+

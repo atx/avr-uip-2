@@ -200,7 +200,7 @@ void uip_log(char *m)
 }
 #endif
 
-/*---------------------------------------------------------------------------*/
+
 
 
 void dhcpc_configured(const struct dhcpc_state *s)
@@ -253,4 +253,4 @@ void dhcpc_configured(const struct dhcpc_state *s)
 #endif
 }
 
-/*---------------------------------------------------------------------------*/
+

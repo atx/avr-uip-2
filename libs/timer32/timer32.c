@@ -48,7 +48,7 @@
 #include "clock.h"
 #include "timer32.h"
 
-/*---------------------------------------------------------------------------*/
+
 /**
  * Set a timer32.
  *
@@ -66,7 +66,7 @@ timer32_set(struct timer32 *t, clock_time32_t interval)
 	t->interval = interval;
 	t->start = clock_time32();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Reset the timer32 with the same interval.
  *
@@ -85,7 +85,7 @@ timer32_reset(struct timer32 *t)
 {
 	t->start += t->interval;
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Restart the timer32 from the current point in time
  *
@@ -105,7 +105,7 @@ timer32_restart(struct timer32 *t)
 {
 	t->start = clock_time32();
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Check if a timer32 has expired.
  *
@@ -123,6 +123,6 @@ timer32_expired(struct timer32 *t)
 	return (clock_time32_t)(clock_time32() - t->start) >= (clock_time32_t)
 	       t->interval;
 }
-/*---------------------------------------------------------------------------*/
+
 
 /** @} */

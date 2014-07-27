@@ -174,11 +174,11 @@ static struct fwcache_entry fwcache[FWCACHE_SIZE];
  */
 #define FW_TIME 20
 
-/*------------------------------------------------------------------------------*/
+
 /**
  * Initialize the uIP packet forwarding module.
  */
-/*------------------------------------------------------------------------------*/
+
 void
 uip_fw_init(void)
 {
@@ -190,7 +190,7 @@ uip_fw_init(void)
 		t->next = NULL;
 	}
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * \internal
  * Check if an IP address is within the network defined by an IP
@@ -202,14 +202,14 @@ uip_fw_init(void)
  *
  * \return Non-zero if IP address is in network, zero otherwise.
  */
-/*------------------------------------------------------------------------------*/
+
 static unsigned char
 ipaddr_maskcmp(u16_t *ipaddr, u16_t *netipaddr, u16_t *netmask)
 {
 	return (ipaddr[0] & netmask [0]) == (netipaddr[0] & netmask[0]) &&
 	       (ipaddr[1] & netmask[1]) == (netipaddr[1] & netmask[1]);
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * \internal
  * Send out an ICMP TIME-EXCEEDED message.
@@ -217,7 +217,7 @@ ipaddr_maskcmp(u16_t *ipaddr, u16_t *netipaddr, u16_t *netmask)
  * This function replaces the packet in the uip_buf buffer with the
  * ICMP packet.
  */
-/*------------------------------------------------------------------------------*/
+
 static void
 time_exceeded(void)
 {
@@ -271,13 +271,13 @@ time_exceeded(void)
 
 
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * \internal
  * Register a packet in the forwarding cache so that it won't be
  * forwarded again.
  */
-/*------------------------------------------------------------------------------*/
+
 static void
 fwcache_register(void)
 {
@@ -314,12 +314,12 @@ fwcache_register(void)
 	fw->offset = BUF->ipoffset;
 #endif
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * \internal
  * Find a network interface for the IP packet in uip_buf.
  */
-/*------------------------------------------------------------------------------*/
+
 static struct uip_fw_netif *
 find_netif(void)
 {
@@ -337,7 +337,7 @@ find_netif(void)
 	/* If no matching netif was found, we use default netif. */
 	return defaultnetif;
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * Output an IP packet on the correct network interface.
  *
@@ -353,7 +353,7 @@ find_netif(void)
  * \return The return value from the actual network interface output
  * function is passed unmodified as a return value.
  */
-/*------------------------------------------------------------------------------*/
+
 u8_t
 uip_fw_output(void)
 {
@@ -388,7 +388,7 @@ uip_fw_output(void)
 	   output function to send out the packet. */
 	return netif->output();
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * Forward an IP packet in the uip_buf buffer.
  *
@@ -397,7 +397,7 @@ uip_fw_output(void)
  * \return UIP_FW_FORWARDED if the packet was forwarded, UIP_FW_LOCAL if
  * the packet should be processed locally.
  */
-/*------------------------------------------------------------------------------*/
+
 u8_t
 uip_fw_forward(void)
 {
@@ -475,21 +475,21 @@ uip_fw_forward(void)
 	   other processing should be made. */
 	return UIP_FW_FORWARDED;
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * Register a network interface with the forwarding module.
  *
  * \param netif A pointer to the network interface that is to be
  * registered.
  */
-/*------------------------------------------------------------------------------*/
+
 void
 uip_fw_register(struct uip_fw_netif *netif)
 {
 	netif->next = netifs;
 	netifs = netif;
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * Register a default network interface.
  *
@@ -499,17 +499,17 @@ uip_fw_register(struct uip_fw_netif *netif)
  * \param netif A pointer to the network interface that is to be
  * registered.
  */
-/*------------------------------------------------------------------------------*/
+
 void
 uip_fw_default(struct uip_fw_netif *netif)
 {
 	defaultnetif = netif;
 }
-/*------------------------------------------------------------------------------*/
+
 /**
  * Perform periodic processing.
  */
-/*------------------------------------------------------------------------------*/
+
 void
 uip_fw_periodic(void)
 {
@@ -519,4 +519,3 @@ uip_fw_periodic(void)
 			--fw->timer;
 	}
 }
-/*------------------------------------------------------------------------------*/

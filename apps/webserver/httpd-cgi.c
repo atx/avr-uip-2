@@ -60,14 +60,14 @@ HTTPD_CGI_CALL(net, "net-stats", net_stats);
 
 static const struct httpd_cgi_call *calls[] = { &file, &tcp, &net, NULL };
 
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(nullfunction(struct httpd_state *s, char *ptr))
 {
 	PSOCK_BEGIN(&s->sout);
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 httpd_cgifunction
 httpd_cgi(char *name)
 {
@@ -80,7 +80,7 @@ httpd_cgi(char *name)
 	}
 	return nullfunction;
 }
-/*---------------------------------------------------------------------------*/
+
 static unsigned short
 generate_file_stats(void *arg)
 {
@@ -88,7 +88,7 @@ generate_file_stats(void *arg)
 	return snprintf((char *)uip_appdata, UIP_APPDATA_SIZE, "%5u",
 	                httpd_fs_count(f));
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(file_stats(struct httpd_state *s, char *ptr))
 {
@@ -98,7 +98,7 @@ PT_THREAD(file_stats(struct httpd_state *s, char *ptr))
 
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 static const char closed[] =   /*  "CLOSED",*/
 {0x43, 0x4c, 0x4f, 0x53, 0x45, 0x44, 0};
 static const char syn_rcvd[] = /*  "SYN-RCVD",*/
@@ -176,7 +176,7 @@ generate_tcp_stats(void *arg)
 	                (uip_outstanding(conn)) ? '*' : ' ',
 	                (uip_stopped(conn)) ? '!' : ' ');
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(tcp_stats(struct httpd_state *s, char *ptr))
 {
@@ -190,7 +190,7 @@ PT_THREAD(tcp_stats(struct httpd_state *s, char *ptr))
 
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 static unsigned short
 generate_net_stats(void *arg)
 {
@@ -214,5 +214,5 @@ PT_THREAD(net_stats(struct httpd_state *s, char *ptr))
 
 	PSOCK_END(&s->sout);
 }
-/*---------------------------------------------------------------------------*/
+
 /** @} */

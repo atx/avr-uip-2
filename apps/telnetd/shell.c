@@ -59,7 +59,7 @@ struct ptentry {
 #define SHELL_PROMPT "uIP 1.0> "
 #endif
 
-/*---------------------------------------------------------------------------*/
+
 static void
 parse(register char *str, struct ptentry *t)
 {
@@ -71,7 +71,7 @@ parse(register char *str, struct ptentry *t)
 
 	p->pfunc(str);
 }
-/*---------------------------------------------------------------------------*/
+
 #if 0  // inttostr not used anywhere
 static void
 inttostr(register char *str, unsigned int i)
@@ -96,7 +96,7 @@ settime(char *str)
 	send_time_to_rtc(timestore_write);
 	shell_output("time set", "");
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 isotime(char *str)
 {
@@ -115,7 +115,7 @@ isotime(char *str)
 }
 #endif
 
-/*---------------------------------------------------------------------------*/
+
 #ifdef NETWORK_CMD
 #define DSTR_BUF 25
 static void
@@ -177,7 +177,7 @@ shell_udpds(char *str)
 }
 #endif
 
-/*---------------------------------------------------------------------------*/
+
 static void
 help(char *str)
 {
@@ -204,7 +204,7 @@ help(char *str)
 	shell_output_P(PSTR("help, ? - show help"), PSTR(""));
 	shell_output_P(PSTR("exit    - exit shell"), PSTR(""));
 }
-/*---------------------------------------------------------------------------*/
+
 static void
 unknown(char *str)
 {
@@ -213,7 +213,7 @@ unknown(char *str)
 		*str = 0;
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 static struct ptentry parsetab[] = {
 	{"stats", help},
 	{"conn", help},
@@ -233,12 +233,12 @@ static struct ptentry parsetab[] = {
 	/* Default action */
 	{NULL, unknown}
 };
-/*---------------------------------------------------------------------------*/
+
 void
 shell_init(void)
 {
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_start(void)
 {
@@ -246,11 +246,11 @@ shell_start(void)
 	shell_output_P(PSTR("Type '?' and return for help"), PSTR(""));
 	shell_prompt(SHELL_PROMPT);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 shell_input(char *cmd)
 {
 	parse(cmd, parsetab);
 	shell_prompt(SHELL_PROMPT);
 }
-/*---------------------------------------------------------------------------*/
+

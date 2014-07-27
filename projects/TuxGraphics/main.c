@@ -130,7 +130,7 @@ void uip_log(char *m)
 }
 
 
-/*---------------------------------------------------------------------------*/
+
 
 /*void
 resolv_found(char *name, u16_t *ipaddr)
@@ -189,4 +189,4 @@ webclient_datahandler(char *data, u16_t len)
 {
 	//printf("Webclient: got %d bytes of data.\n", len);
 }*/
-/*---------------------------------------------------------------------------*/
+

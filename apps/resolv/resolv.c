@@ -135,13 +135,13 @@ static u16_t RESOLV_FAIL[2] = {0, 1};
 static struct uip_udp_conn *resolv_conn = NULL;
 
 
-/*---------------------------------------------------------------------------*/
+
 /** \internal
  * Walk through a compact encoded DNS name and return the end of it.
  *
  * \return The end of the name.
  */
-/*---------------------------------------------------------------------------*/
+
 static unsigned char *
 parse_name(unsigned char *query)
 {
@@ -160,12 +160,12 @@ parse_name(unsigned char *query)
 	/*  printf("\n");*/
 	return query + 1;
 }
-/*---------------------------------------------------------------------------*/
+
 /** \internal
  * Runs through the list of names to see if there are any that have
  * not yet been queried and, if so, sends out a query.
  */
-/*---------------------------------------------------------------------------*/
+
 static void
 check_entries(void)
 {
@@ -238,11 +238,11 @@ check_entries(void)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 /** \internal
  * Called when new UDP data arrives.
  */
-/*---------------------------------------------------------------------------*/
+
 static void
 newdata(void)
 {
@@ -333,11 +333,11 @@ newdata(void)
 	}
 
 }
-/*---------------------------------------------------------------------------*/
+
 /** \internal
  * The main UDP function.
  */
-/*---------------------------------------------------------------------------*/
+
 void
 resolv_appcall(void)
 {
@@ -352,13 +352,13 @@ resolv_appcall(void)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Queues a name so that a question for the name will be sent out.
  *
  * \param name The hostname that is to be queried.
  */
-/*---------------------------------------------------------------------------*/
+
 void
 resolv_query(char *name)
 {
@@ -394,7 +394,7 @@ resolv_query(char *name)
 	nameptr->seqno = seqno;
 	++seqno;
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Look up a hostname in the array of known hostnames.
  *
@@ -407,7 +407,7 @@ resolv_query(char *name)
  * address, or NULL if the hostname was not found in the array of
  * hostnames.
  */
-/*---------------------------------------------------------------------------*/
+
 u16_t *
 resolv_lookup(char *name)
 {
@@ -441,7 +441,7 @@ resolv_lookup(char *name)
 
 	return NULL;
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Obtain the currently configured DNS server.
  *
@@ -449,7 +449,7 @@ resolv_lookup(char *name)
  * the currently configured DNS server or NULL if no DNS server has
  * been configured.
  */
-/*---------------------------------------------------------------------------*/
+
 u16_t *
 resolv_getserver(void)
 {
@@ -457,14 +457,14 @@ resolv_getserver(void)
 		return NULL;
 	return resolv_conn->ripaddr;
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Configure which DNS server to use for queries.
  *
  * \param dnsserver A pointer to a 4-byte representation of the IP
  * address of the DNS server to be configured.
  */
-/*---------------------------------------------------------------------------*/
+
 void
 resolv_conf(u16_t *dnsserver)
 {
@@ -473,11 +473,11 @@ resolv_conf(u16_t *dnsserver)
 
 	resolv_conn = uip_udp_new((uip_ipaddr_t *)dnsserver, HTONS(53));
 }
-/*---------------------------------------------------------------------------*/
+
 /**
  * Initalize the resolver.
  */
-/*---------------------------------------------------------------------------*/
+
 void
 resolv_init(void)
 {
@@ -488,7 +488,7 @@ resolv_init(void)
 		names[i].state = STATE_DONE;
 
 }
-/*---------------------------------------------------------------------------*/
+
 
 #ifndef RESOLV_FOUND_CUSTOM
 // this is a do nothing stub as apps are just going to check again and again

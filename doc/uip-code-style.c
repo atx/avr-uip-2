@@ -46,7 +46,7 @@ static int flag;
  * Put dividers (a single-line comment consisting only of dashes)
  * between functions.
  */
-/*---------------------------------------------------------------------------*/
+
 /**
  * \brief      Use Doxygen documentation for functions.
  * \param c    Briefly describe all parameters.
@@ -100,7 +100,7 @@ code_style_example_function(void)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 /*
  * Static (non-global) functions do not need Doxygen comments. The
  * name should not be prepended with the module name - doing so would
@@ -111,7 +111,7 @@ an_example_function(void)
 {
 
 }
-/*---------------------------------------------------------------------------*/
+
 
 /* The following stuff ends the \defgroup block at the beginning of
    the file: */

@@ -92,7 +92,7 @@
 
 //#include "usart.h"
 
-/*---------------------------------------------------------------------------*/
+
 /* Variable definitions. */
 
 
@@ -289,7 +289,7 @@ uip_add32(u8_t *op32, u16_t op16)
 #endif /* UIP_ARCH_ADD32 */
 
 #if ! UIP_ARCH_CHKSUM
-/*---------------------------------------------------------------------------*/
+
 static u16_t
 chksum(u16_t sum, const u8_t *data, u16_t len)
 {
@@ -320,13 +320,13 @@ chksum(u16_t sum, const u8_t *data, u16_t len)
 	/* Return sum in host byte order. */
 	return sum;
 }
-/*---------------------------------------------------------------------------*/
+
 u16_t
 uip_chksum(u16_t *data, u16_t len)
 {
 	return htons(chksum(0, (u8_t *)data, len));
 }
-/*---------------------------------------------------------------------------*/
+
 #ifndef UIP_ARCH_IPCHKSUM
 u16_t
 uip_ipchksum(void)
@@ -338,7 +338,7 @@ uip_ipchksum(void)
 	return (sum == 0) ? 0xffff : htons(sum);
 }
 #endif
-/*---------------------------------------------------------------------------*/
+
 static u16_t
 upper_layer_chksum(u8_t proto)
 {
@@ -364,7 +364,7 @@ upper_layer_chksum(u8_t proto)
 
 	return (sum == 0) ? 0xffff : htons(sum);
 }
-/*---------------------------------------------------------------------------*/
+
 #if UIP_CONF_IPV6
 u16_t
 uip_icmp6chksum(void)
@@ -373,13 +373,13 @@ uip_icmp6chksum(void)
 
 }
 #endif /* UIP_CONF_IPV6 */
-/*---------------------------------------------------------------------------*/
+
 u16_t
 uip_tcpchksum(void)
 {
 	return upper_layer_chksum(UIP_PROTO_TCP);
 }
-/*---------------------------------------------------------------------------*/
+
 #if UIP_UDP_CHECKSUMS
 u16_t
 uip_udpchksum(void)
@@ -388,7 +388,7 @@ uip_udpchksum(void)
 }
 #endif /* UIP_UDP_CHECKSUMS */
 #endif /* UIP_ARCH_CHKSUM */
-/*---------------------------------------------------------------------------*/
+
 void
 uip_init(void)
 {
@@ -420,7 +420,7 @@ uip_init(void)
 #endif /* UIP_FIXEDADDR */
 
 }
-/*---------------------------------------------------------------------------*/
+
 #if UIP_ACTIVE_OPEN
 struct uip_conn *
 uip_connect(uip_ipaddr_t *ripaddr, u16_t rport)
@@ -482,7 +482,7 @@ again:
 	return conn;
 }
 #endif /* UIP_ACTIVE_OPEN */
-/*---------------------------------------------------------------------------*/
+
 #if UIP_UDP
 struct uip_udp_conn *
 uip_udp_new(uip_ipaddr_t *ripaddr, u16_t rport)
@@ -524,7 +524,7 @@ again:
 	return conn;
 }
 #endif /* UIP_UDP */
-/*---------------------------------------------------------------------------*/
+
 void
 uip_unlisten(u16_t port)
 {
@@ -535,7 +535,7 @@ uip_unlisten(u16_t port)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 void
 uip_listen(u16_t port)
 {
@@ -546,7 +546,7 @@ uip_listen(u16_t port)
 		}
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 /* XXX: IP fragment reassembly: not well-tested. */
 
 #if UIP_REASSEMBLY && !UIP_CONF_IPV6
@@ -676,7 +676,7 @@ nullreturn:
 	return 0;
 }
 #endif /* UIP_REASSEMBLY */
-/*---------------------------------------------------------------------------*/
+
 static void
 uip_add_rcv_nxt(u16_t n)
 {
@@ -686,7 +686,7 @@ uip_add_rcv_nxt(u16_t n)
 	uip_conn->rcv_nxt[2] = uip_acc32[2];
 	uip_conn->rcv_nxt[3] = uip_acc32[3];
 }
-/*---------------------------------------------------------------------------*/
+
 void
 uip_process(u8_t flag)
 {
@@ -1861,13 +1861,13 @@ drop:
 	uip_flags = 0;
 	return;
 }
-/*---------------------------------------------------------------------------*/
+
 u16_t
 htons(u16_t val)
 {
 	return HTONS(val);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 uip_send(const void *data, int len)
 {

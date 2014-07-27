@@ -31,7 +31,7 @@
  * (defined at the end of the code).
  */
 static int handle_connection(struct hello_world_state *s);
-/*---------------------------------------------------------------------------*/
+
 /*
  * The initialization function. We must explicitly call this function
  * from the system initialization code, some time after uip_init() is
@@ -43,7 +43,7 @@ hello_world_init(void)
 	/* We start to listen for connections on TCP port 1000. */
 	uip_listen(HTONS(1000));
 }
-/*---------------------------------------------------------------------------*/
+
 /*
  * In hello-world.h we have defined the UIP_APPCALL macro to
  * hello_world_appcall so that this funcion is uIP's application
@@ -75,7 +75,7 @@ hello_world_appcall(void)
 	 */
 	handle_connection(s);
 }
-/*---------------------------------------------------------------------------*/
+
 /*
  * This is the protosocket function that handles the communication. A
  * protosocket function must always return an int, but must never
@@ -96,4 +96,4 @@ handle_connection(struct hello_world_state *s)
 
 	PSOCK_END(&s->p);
 }
-/*---------------------------------------------------------------------------*/
+

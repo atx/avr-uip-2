@@ -70,7 +70,7 @@
  */
 #define BUF_FOUND 2
 
-/*---------------------------------------------------------------------------*/
+
 static void
 buf_setup(struct psock_buf *buf,
           u8_t *bufptr, u16_t bufsize)
@@ -78,7 +78,7 @@ buf_setup(struct psock_buf *buf,
 	buf->ptr = bufptr;
 	buf->left = bufsize;
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t
 buf_bufdata(struct psock_buf *buf, u16_t len,
             u8_t **dataptr, u16_t *datalen)
@@ -106,7 +106,7 @@ buf_bufdata(struct psock_buf *buf, u16_t len,
 		return BUF_FULL;
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 static u8_t
 buf_bufto(register struct psock_buf *buf, u8_t endmarker,
           register u8_t **dataptr, register u16_t *datalen)
@@ -137,7 +137,7 @@ buf_bufto(register struct psock_buf *buf, u8_t endmarker,
 
 	return BUF_FULL;
 }
-/*---------------------------------------------------------------------------*/
+
 static char
 send_data(register struct psock *s)
 {
@@ -151,7 +151,7 @@ send_data(register struct psock *s)
 	}
 	return 0;
 }
-/*---------------------------------------------------------------------------*/
+
 static char
 data_acked(register struct psock *s)
 {
@@ -168,7 +168,7 @@ data_acked(register struct psock *s)
 	}
 	return 0;
 }
-/*---------------------------------------------------------------------------*/
+
 PT_THREAD(psock_send(register struct psock *s, const char *buf,
                      unsigned int len))
 {
@@ -206,7 +206,7 @@ PT_THREAD(psock_send(register struct psock *s, const char *buf,
 
 	PT_END(&s->psockpt);
 }
-/*---------------------------------------------------------------------------*/
+
 PT_THREAD(psock_generator_send(register struct psock *s,
                                unsigned short(*generate)(void *), void *arg))
 {
@@ -235,13 +235,13 @@ PT_THREAD(psock_generator_send(register struct psock *s,
 
 	PT_END(&s->psockpt);
 }
-/*---------------------------------------------------------------------------*/
+
 u16_t
 psock_datalen(struct psock *psock)
 {
 	return psock->bufsize - psock->buf.left;
 }
-/*---------------------------------------------------------------------------*/
+
 char
 psock_newdata(struct psock *s)
 {
@@ -261,7 +261,7 @@ psock_newdata(struct psock *s)
 		return 0;
 	}
 }
-/*---------------------------------------------------------------------------*/
+
 PT_THREAD(psock_readto(register struct psock *psock, unsigned char c))
 {
 	PT_BEGIN(&psock->psockpt);
@@ -288,7 +288,7 @@ PT_THREAD(psock_readto(register struct psock *psock, unsigned char c))
 	}
 	PT_END(&psock->psockpt);
 }
-/*---------------------------------------------------------------------------*/
+
 PT_THREAD(psock_readbuf(register struct psock *psock))
 {
 	PT_BEGIN(&psock->psockpt);
@@ -316,7 +316,7 @@ PT_THREAD(psock_readbuf(register struct psock *psock))
 	}
 	PT_END(&psock->psockpt);
 }
-/*---------------------------------------------------------------------------*/
+
 void
 psock_init(register struct psock *psock, char *buffer, unsigned int buffersize)
 {
@@ -328,7 +328,7 @@ psock_init(register struct psock *psock, char *buffer, unsigned int buffersize)
 	PT_INIT(&psock->pt);
 	PT_INIT(&psock->psockpt);
 }
-/*---------------------------------------------------------------------------*/
+
 
 char send_data_P(register struct psock *s)
 {
@@ -380,4 +380,3 @@ PT_THREAD(psock_send_P(register struct psock *s,  PGM_P buf,
 
 	PT_END(&s->psockpt);
 }
-

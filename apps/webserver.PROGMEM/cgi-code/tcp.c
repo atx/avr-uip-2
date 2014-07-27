@@ -1,5 +1,5 @@
 
-/*---------------------------------------------------------------------------*/
+
 static const char closed[] =   /*  "CLOSED",*/
 {0x43, 0x4c, 0x4f, 0x53, 0x45, 0x44, 0};
 static const char syn_rcvd[] = /*  "SYN-RCVD",*/
@@ -77,7 +77,7 @@ generate_tcp_stats(void *arg)
 	                (uip_outstanding(conn)) ? '*' : ' ',
 	                (uip_stopped(conn)) ? '!' : ' ');
 }
-/*---------------------------------------------------------------------------*/
+
 static
 PT_THREAD(tcp_stats(struct httpd_state *s, char *ptr))
 {

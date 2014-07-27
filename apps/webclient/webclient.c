@@ -82,37 +82,37 @@
 
 static struct webclient_state s;
 
-/*-----------------------------------------------------------------------------------*/
+
 char *
 webclient_mimetype(void)
 {
 	return s.mimetype;
 }
-/*-----------------------------------------------------------------------------------*/
+
 char *
 webclient_filename(void)
 {
 	return s.file;
 }
-/*-----------------------------------------------------------------------------------*/
+
 char *
 webclient_hostname(void)
 {
 	return s.host;
 }
-/*-----------------------------------------------------------------------------------*/
+
 unsigned short
 webclient_port(void)
 {
 	return s.port;
 }
-/*-----------------------------------------------------------------------------------*/
+
 void
 webclient_init(void)
 {
 
 }
-/*-----------------------------------------------------------------------------------*/
+
 static void
 init_connection(void)
 {
@@ -129,13 +129,13 @@ init_connection(void)
 
 	s.httpheaderlineptr = 0;
 }
-/*-----------------------------------------------------------------------------------*/
+
 void
 webclient_close(void)
 {
 	s.state = WEBCLIENT_STATE_CLOSE;
 }
-/*-----------------------------------------------------------------------------------*/
+
 unsigned char
 webclient_get(char *host, u16_t port, char *file)
 {
@@ -164,7 +164,7 @@ webclient_get(char *host, u16_t port, char *file)
 	init_connection();
 	return 1;
 }
-/*-----------------------------------------------------------------------------------*/
+
 static unsigned char *
 copy_string(unsigned char *dest,
             const unsigned char *src, unsigned char len)
@@ -172,7 +172,7 @@ copy_string(unsigned char *dest,
 	strncpy(dest, src, len);
 	return dest + len;
 }
-/*-----------------------------------------------------------------------------------*/
+
 static void
 senddata(void)
 {
@@ -203,7 +203,7 @@ senddata(void)
 		uip_send(&(getrequest[s.getrequestptr]), len);
 	}
 }
-/*-----------------------------------------------------------------------------------*/
+
 static void
 acked(void)
 {
@@ -217,7 +217,7 @@ acked(void)
 		s.getrequestptr += len;
 	}
 }
-/*-----------------------------------------------------------------------------------*/
+
 static u16_t
 parse_statusline(u16_t len)
 {
@@ -261,7 +261,7 @@ parse_statusline(u16_t len)
 	}
 	return len;
 }
-/*-----------------------------------------------------------------------------------*/
+
 static char
 casecmp(char *str1, const char *str2, char len)
 {
@@ -280,7 +280,7 @@ casecmp(char *str1, const char *str2, char len)
 	}
 	return 0;
 }
-/*-----------------------------------------------------------------------------------*/
+
 static u16_t
 parse_headers(u16_t len)
 {
@@ -344,7 +344,7 @@ parse_headers(u16_t len)
 	}
 	return len;
 }
-/*-----------------------------------------------------------------------------------*/
+
 static void
 newdata(void)
 {
@@ -362,7 +362,7 @@ newdata(void)
 	    s.httpflag != HTTPFLAG_MOVED)
 		webclient_datahandler((char *)uip_appdata, len);
 }
-/*-----------------------------------------------------------------------------------*/
+
 void
 webclient_appcall(void)
 {
@@ -419,7 +419,7 @@ webclient_appcall(void)
 		}
 	}
 }
-/*-----------------------------------------------------------------------------------*/
+
 
 /** @} */
 /** @} */

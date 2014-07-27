@@ -68,7 +68,7 @@ typedef uip_ip6addr_t uip_ipaddr_t;
 typedef uip_ip4addr_t uip_ipaddr_t;
 #endif /* UIP_CONF_IPV6 */
 
-/*---------------------------------------------------------------------------*/
+
 /* First, the functions that should be called from the
  * system. Initialization, the periodic timer and incoming packets are
  * handled by the following three functions.
@@ -424,7 +424,7 @@ extern u8_t uip_buf[UIP_BUFSIZE + 2];
 
 /** @} */
 
-/*---------------------------------------------------------------------------*/
+
 /* Functions that are used by the uIP application program. Opening and
  * closing connections, sending and receiving data, etc. is all
  * handled by the functions below.
@@ -1294,11 +1294,11 @@ struct uip_stats {
 extern struct uip_stats uip_stat;
 
 
-/*---------------------------------------------------------------------------*/
+
 /* All the stuff below this point is internal to uIP and should not be
  * used directly by an application or by a device driver.
  */
-/*---------------------------------------------------------------------------*/
+
 /* u8_t uip_flags:
  *
  * When the application is called, uip_flags will contain the flags
