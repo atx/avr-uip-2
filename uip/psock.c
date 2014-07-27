@@ -80,8 +80,7 @@ buf_setup(struct psock_buf *buf,
 }
 
 static u8_t
-buf_bufdata(struct psock_buf *buf, u16_t len,
-            u8_t **dataptr, u16_t *datalen)
+buf_bufdata(struct psock_buf *buf, u8_t **dataptr, u16_t *datalen)
 {
 	if (*datalen < buf->left) {
 		memcpy(buf->ptr, *dataptr, *datalen);
@@ -306,7 +305,7 @@ PT_THREAD(psock_readbuf(register struct psock *psock))
 			psock->readptr = (u8_t *)uip_appdata;
 			psock->readlen = uip_datalen();
 		}
-	} while (buf_bufdata(&psock->buf, psock->bufsize,
+	} while (buf_bufdata(&psock->buf,
 	                     &psock->readptr,
 	                     &psock->readlen) != BUF_FULL);
 
