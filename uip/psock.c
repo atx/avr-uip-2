@@ -353,7 +353,7 @@ PT_THREAD(psock_send_P(register struct psock *s,  PGM_P buf,
 
 	/* Save the length of and a pointer to the data that is to be
 	   sent. */
-	s->sendptr = buf;
+	s->sendptr = (u8_t *)buf;
 	s->sendlen = len;
 
 	s->state = STATE_NONE;
