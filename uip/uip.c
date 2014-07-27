@@ -80,6 +80,9 @@
  * the packet back to the peer.
 */
 
+/* Ignore warnings caused by the BUF macro */
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+
 #include "uip.h"
 #include "uipopt.h"
 #include "uip_arch.h"

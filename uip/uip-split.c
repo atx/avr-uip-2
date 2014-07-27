@@ -33,6 +33,9 @@
  * $Id: uip-split.c,v 1.2 2006/06/12 08:00:30 adam Exp $
  */
 
+/* Ignore warnings caused by the BUF macro */
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+
 #include <string.h>
 
 #include "uip-split.h"

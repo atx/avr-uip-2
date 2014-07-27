@@ -58,6 +58,8 @@
  *
  */
 
+/* Ignore warnings caused by the BUF macro */
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
 
 #include "uip_arp.h"
 
