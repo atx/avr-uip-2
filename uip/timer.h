@@ -76,10 +76,20 @@ struct timer {
 	clock_time_t interval;
 };
 
-void timer_set(struct timer *t, clock_time_t interval);
-void timer_reset(struct timer *t);
-void timer_restart(struct timer *t);
-int timer_expired(struct timer *t);
+#define timer_set(t, i) 			\
+	do {							\
+		(t)->interval = (i);		\
+		(t)->start = clock_time();	\
+	} while(0)
+
+#define timer_reset(t) \
+	(t)->start += (t)->interval
+
+#define timer_restart(t) \
+	(t)->start = clock_time();
+
+#define timer_expired(t) \
+	((clock_time_t)(clock_time() - (t)->start) >= (clock_time_t)(t)->interval)
 
 #endif /* __TIMER_H__ */
 
