@@ -85,8 +85,14 @@ struct timer {
 #define timer_reset(t) \
 	((t)->start += (t)->interval)
 
+#define timer_tryreset(t) \
+	(timer_expired(t) ? timer_reset(t) || true : false)
+
 #define timer_restart(t) \
 	((t)->start = clock_time())
+
+#define timer_tryrestart(t) \
+	(timer_expired(t) ? timer_restart(t) || true : false)
 
 #define timer_expired(t) \
 	((clock_time_t)(clock_time() - (t)->start) >= (clock_time_t)(t)->interval)
